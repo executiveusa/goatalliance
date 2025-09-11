@@ -27,7 +27,7 @@ export interface Contractor {
   reviewCount: number
   skills: string[]
   experience?: number | null
-  portfolio?: any
+  portfolio?: Record<string, unknown>
   certifications: string[]
   createdAt: Date
   updatedAt: Date

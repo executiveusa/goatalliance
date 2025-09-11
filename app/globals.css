@@ -1,29 +1,56 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* G.O.A.T. Alliance Brand Colors */
+  --charcoal: #0B0B0B;
+  --gold: #F6C84C;
+  --cream: #FAF7F0;
+  --accent: #84C6FF;
+  --muted: #F1EFEA;
+  
+  /* Shadows */
+  --shadow-soft: 0 2px 8px rgba(11, 11, 11, 0.1);
+  --shadow-strong: 0 8px 32px rgba(11, 11, 11, 0.24);
+  
+  /* Glass Effects */
+  --glass-bg-dark: rgba(255, 255, 255, 0.06);
+  --glass-bg-light: rgba(255, 255, 255, 0.92);
+  --glass-border: rgba(255, 255, 255, 0.12);
+  
+  /* Base System Colors (using brand palette) */
+  --background: var(--cream);
+  --foreground: var(--charcoal);
   --card: #ffffff;
-  --card-foreground: #171717;
+  --card-foreground: var(--charcoal);
   --popover: #ffffff;
-  --popover-foreground: #171717;
-  --primary: #0f172a;
-  --primary-foreground: #f8fafc;
-  --secondary: #f1f5f9;
-  --secondary-foreground: #0f172a;
-  --muted: #f1f5f9;
+  --popover-foreground: var(--charcoal);
+  --primary: var(--charcoal);
+  --primary-foreground: var(--cream);
+  --secondary: var(--muted);
+  --secondary-foreground: var(--charcoal);
+  --muted: var(--muted);
   --muted-foreground: #64748b;
-  --accent: #f1f5f9;
-  --accent-foreground: #0f172a;
+  --accent: var(--accent);
+  --accent-foreground: var(--charcoal);
   --destructive: #dc2626;
   --destructive-foreground: #f8fafc;
   --border: #e2e8f0;
   --input: #e2e8f0;
-  --ring: #0f172a;
-  --radius: 0.5rem;
+  --ring: var(--gold);
+  --radius: 0.75rem;
 }
 
 @theme inline {
+  --color-charcoal: var(--charcoal);
+  --color-gold: var(--gold);
+  --color-cream: var(--cream);
+  --color-accent: var(--accent);
+  --color-muted: var(--muted);
+  --shadow-soft: var(--shadow-soft);
+  --shadow-strong: var(--shadow-strong);
+  --glass-bg-dark: var(--glass-bg-dark);
+  --glass-bg-light: var(--glass-bg-light);
+  --glass-border: var(--glass-border);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -50,25 +77,25 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-    --card: #0a0a0a;
-    --card-foreground: #ededed;
-    --popover: #0a0a0a;
-    --popover-foreground: #ededed;
-    --primary: #f8fafc;
-    --primary-foreground: #0f172a;
+    --background: var(--charcoal);
+    --foreground: var(--cream);
+    --card: var(--charcoal);
+    --card-foreground: var(--cream);
+    --popover: var(--charcoal);
+    --popover-foreground: var(--cream);
+    --primary: var(--gold);
+    --primary-foreground: var(--charcoal);
     --secondary: #1e293b;
-    --secondary-foreground: #f8fafc;
+    --secondary-foreground: var(--cream);
     --muted: #1e293b;
     --muted-foreground: #94a3b8;
-    --accent: #1e293b;
-    --accent-foreground: #f8fafc;
+    --accent: var(--accent);
+    --accent-foreground: var(--charcoal);
     --destructive: #dc2626;
-    --destructive-foreground: #f8fafc;
+    --destructive-foreground: var(--cream);
     --border: #1e293b;
     --input: #1e293b;
-    --ring: #f8fafc;
+    --ring: var(--gold);
   }
 }
 
@@ -136,4 +163,12 @@ html {
 
 .animation-delay-4000 {
   animation-delay: 4s;
+}
+
+/* Line clamp utilities */
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }

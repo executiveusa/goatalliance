@@ -1,6 +1,7 @@
 import Header from "@/components/layout/header"
 import Footer from "@/components/layout/footer"
 import { Button } from "@/components/ui/button"
+import DirectoryGrid from "@/app/components/DirectoryGrid"
 
 const categories = [
   { name: "Construction", icon: "🏗️", count: 234 },
@@ -22,9 +23,8 @@ const featuredProfessionals = [
     rating: 4.9,
     reviewCount: 127,
     hourlyRate: "$150",
-    image: "/api/placeholder/100/100",
-    skills: ["React", "Node.js", "TypeScript", "AWS"],
-    description: "10+ years building scalable web applications for startups and enterprises."
+    blurb: "10+ years building scalable web applications for startups and enterprises. Specialized in React, Node.js, and cloud architecture.",
+    slug: "sarah-chen"
   },
   {
     id: 2,
@@ -34,9 +34,8 @@ const featuredProfessionals = [
     rating: 5.0,
     reviewCount: 89,
     hourlyRate: "$95",
-    image: "/api/placeholder/100/100",
-    skills: ["Residential", "Commercial", "Renovations", "Project Management"],
-    description: "Award-winning contractor specializing in sustainable construction practices."
+    blurb: "Award-winning contractor specializing in sustainable construction practices. 15+ years of residential and commercial experience.",
+    slug: "marcus-williams"
   },
   {
     id: 3,
@@ -46,9 +45,8 @@ const featuredProfessionals = [
     rating: 4.8,
     reviewCount: 156,
     hourlyRate: "$200",
-    image: "/api/placeholder/100/100",
-    skills: ["Brand Strategy", "Digital Marketing", "SEO", "Content Strategy"],
-    description: "Helped 200+ brands increase their market presence and revenue."
+    blurb: "Helped 200+ brands increase their market presence and revenue through strategic positioning and digital marketing excellence.",
+    slug: "elena-rodriguez"
   }
 ]
 
@@ -115,65 +113,7 @@ export default function DirectoryPage() {
               </p>
             </div>
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {featuredProfessionals.map((professional) => (
-                <div 
-                  key={professional.id}
-                  className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow border border-gray-100 overflow-hidden"
-                >
-                  <div className="p-6">
-                    <div className="flex items-start space-x-4">
-                      <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center text-white text-2xl font-bold">
-                        {professional.name.split(' ').map(n => n[0]).join('')}
-                      </div>
-                      <div className="flex-1">
-                        <h3 className="font-bold text-lg text-gray-900">{professional.name}</h3>
-                        <p className="text-gray-600 mb-1">{professional.title}</p>
-                        <p className="text-gray-500 text-sm flex items-center">
-                          📍 {professional.location}
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="mt-4">
-                      <div className="flex items-center justify-between mb-3">
-                        <div className="flex items-center space-x-2">
-                          <div className="flex text-yellow-400">
-                            {'★'.repeat(Math.floor(professional.rating))}
-                          </div>
-                          <span className="text-sm text-gray-600">
-                            {professional.rating} ({professional.reviewCount} reviews)
-                          </span>
-                        </div>
-                        <span className="text-lg font-bold text-green-600">{professional.hourlyRate}/hr</span>
-                      </div>
-
-                      <p className="text-gray-600 text-sm mb-4">{professional.description}</p>
-
-                      <div className="flex flex-wrap gap-2 mb-4">
-                        {professional.skills.map((skill, index) => (
-                          <span 
-                            key={index}
-                            className="px-3 py-1 bg-blue-100 text-blue-800 text-xs rounded-full font-medium"
-                          >
-                            {skill}
-                          </span>
-                        ))}
-                      </div>
-
-                      <div className="flex space-x-2">
-                        <Button className="flex-1 bg-blue-600 hover:bg-blue-700">
-                          View Profile
-                        </Button>
-                        <Button variant="outline" className="flex-1">
-                          Message
-                        </Button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
+            <DirectoryGrid professionals={featuredProfessionals} />
 
             <div className="text-center mt-12">
               <Button size="lg" variant="outline">

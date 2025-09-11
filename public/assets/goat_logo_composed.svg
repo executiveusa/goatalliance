@@ -1,0 +1,21 @@
+<svg width="320" height="120" viewBox="0 0 320 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- G.O.A.T. Alliance Logo Placeholder -->
+  <!-- Golden circle background representing the seal -->
+  <circle cx="60" cy="60" r="45" fill="#F6C84C"/>
+  
+  <!-- Charcoal goat head silhouette -->
+  <path d="M30 45 C25 35, 35 25, 45 30 Q55 25, 65 30 C75 25, 85 35, 80 45 Q85 55, 80 65 L75 70 Q70 75, 60 75 Q50 75, 45 70 L40 65 Q35 55, 30 45 Z" fill="#0B0B0B"/>
+  
+  <!-- Small horns -->
+  <path d="M42 32 L40 25 L44 26 Z" fill="#0B0B0B"/>
+  <path d="M78 32 L80 25 L76 26 Z" fill="#0B0B0B"/>
+  
+  <!-- Eyes -->
+  <circle cx="48" cy="45" r="3" fill="#F6C84C"/>
+  <circle cx="72" cy="45" r="3" fill="#F6C84C"/>
+  
+  <!-- G.O.A.T. ALLIANCE text -->
+  <text x="130" y="35" font-family="system-ui, sans-serif" font-size="24" font-weight="bold" fill="currentColor">G.O.A.T.</text>
+  <text x="130" y="65" font-family="system-ui, sans-serif" font-size="18" font-weight="600" fill="currentColor">ALLIANCE</text>
+  <text x="130" y="85" font-family="system-ui, sans-serif" font-size="10" fill="currentColor" opacity="0.7">Greatest Of All Time</text>
+</svg>
