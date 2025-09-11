@@ -2,7 +2,6 @@
 
 # Dependencies
 node_modules/
-/node_modules
 /.pnp
 .pnp.js
 .pnp.*
@@ -13,30 +12,22 @@ node_modules/
 !.yarn/versions
 
 # Testing
-/coverage
 coverage/
 *.lcov
 /playwright-report/
 /test-results/
 
 # Next.js
-/.next/
-/out/
 .next/
 out/
 
 # Production builds
-/build
 build/
 dist/
 
-# Environment variables (keeping .env files for deployment config)
+# Environment variables
 .env*
 .env*.local
-# Uncomment these if you want to hide environment files:
-# .env
-# .env.local
-# .env.production
 
 # Runtime data
 pids/
@@ -79,9 +70,3 @@ temp/
 # TypeScript
 *.tsbuildinfo
 next-env.d.ts
-
-# Backend
-backend/go.sum
-
-# Encore specific
-encore.gen/
