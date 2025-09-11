@@ -1,0 +1,5 @@
+{
+  "buildCommand": "yarn build",
+  "framework": "nextjs",
+  "installCommand": "yarn install --frozen-lockfile"
+}
