@@ -1,20 +1,10 @@
-<<<<<<< copilot/fix-a3cf03b5-d35d-43d0-bb4e-16e4add06844
-# Dependencies
-/node_modules
-/.pnp
-.pnp.js
-
-# Testing
-/coverage
-/playwright-report/
-/test-results/
-=======
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # Dependencies
 node_modules/
 /node_modules
 /.pnp
+.pnp.js
 .pnp.*
 .yarn/*
 !.yarn/patches
@@ -26,28 +16,12 @@ node_modules/
 /coverage
 coverage/
 *.lcov
->>>>>>> main
+/playwright-report/
+/test-results/
 
 # Next.js
 /.next/
 /out/
-<<<<<<< copilot/fix-a3cf03b5-d35d-43d0-bb4e-16e4add06844
-
-# Production
-/build
-
-# Misc
-.DS_Store
-*.pem
-
-# Debug
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-
-# Local env files
-.env*.local
-=======
 .next/
 out/
 
@@ -58,6 +32,7 @@ dist/
 
 # Environment variables (keeping .env files for deployment config)
 .env*
+.env*.local
 # Uncomment these if you want to hide environment files:
 # .env
 # .env.local
@@ -97,7 +72,6 @@ Thumbs.db
 tmp/
 temp/
 .tmp/
->>>>>>> main
 
 # Vercel
 .vercel
@@ -106,10 +80,8 @@ temp/
 *.tsbuildinfo
 next-env.d.ts
 
-<<<<<<< copilot/fix-a3cf03b5-d35d-43d0-bb4e-16e4add06844
 # Backend
 backend/go.sum
-=======
+
 # Encore specific
 encore.gen/
->>>>>>> main
