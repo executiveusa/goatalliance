@@ -4,6 +4,7 @@
 node_modules/
 /node_modules
 /.pnp
+.pnp.js
 .pnp.*
 .yarn/*
 !.yarn/patches
@@ -31,6 +32,7 @@ dist/
 
 # Environment variables (keeping .env files for deployment config)
 .env*
+.env*.local
 # Uncomment these if you want to hide environment files:
 # .env
 # .env.local
@@ -77,6 +79,9 @@ temp/
 # TypeScript
 *.tsbuildinfo
 next-env.d.ts
+
+# Backend
+backend/go.sum
 
 # Encore specific
 encore.gen/
