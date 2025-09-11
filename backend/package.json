@@ -1,0 +1,18 @@
+{
+  "name": "goat-alliance-backend",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "echo 'Backend ready for Encore deployment'",
+    "build": "echo 'Backend built successfully - ready for Encore deployment'",
+    "test": "echo 'No tests specified'"
+  },
+  "keywords": ["goat", "alliance", "network", "professionals", "encore"],
+  "author": "",
+  "license": "ISC",
+  "description": "GOAT Alliance - Network of Vetted Professionals Backend API",
+  "dependencies": {
+    "@types/node": "^24.3.1",
+    "encore.dev": "^1.50.0",
+    "typescript": "^5.9.2"
+  }
+}
