@@ -1,10 +1,7 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # Dependencies
-<<<<<<< copilot/fix-2c655941-e2c1-434f-b3cb-e5ac5375824d
-=======
 node_modules/
->>>>>>> main
 /node_modules
 /.pnp
 .pnp.*
@@ -16,13 +13,10 @@ node_modules/
 
 # Testing
 /coverage
-<<<<<<< copilot/fix-2c655941-e2c1-434f-b3cb-e5ac5375824d
-/playwright-report/
-/test-results/
-=======
 coverage/
 *.lcov
->>>>>>> main
+/playwright-report/
+/test-results/
 
 # Next.js
 /.next/
@@ -30,22 +24,11 @@ coverage/
 .next/
 out/
 
-<<<<<<< copilot/fix-2c655941-e2c1-434f-b3cb-e5ac5375824d
-# Production
-=======
 # Production builds
->>>>>>> main
 /build
 build/
 dist/
 
-<<<<<<< copilot/fix-2c655941-e2c1-434f-b3cb-e5ac5375824d
-# Misc
-.DS_Store
-*.pem
-
-# Debug
-=======
 # Environment variables (keeping .env files for deployment config)
 .env*
 # Uncomment these if you want to hide environment files:
@@ -59,20 +42,14 @@ pids/
 *.seed
 *.pid.lock
 
-# Logs
+# Debug logs
 logs/
 *.log
->>>>>>> main
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
-<<<<<<< copilot/fix-2c655941-e2c1-434f-b3cb-e5ac5375824d
-# Local env files
-.env*
-
-=======
 # OS generated files
 .DS_Store
 .DS_Store?
@@ -94,7 +71,6 @@ tmp/
 temp/
 .tmp/
 
->>>>>>> main
 # Vercel
 .vercel
 
