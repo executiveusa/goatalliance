@@ -1,26 +1,17 @@
-package main
+// main_encore.go - Production version for Encore deployment
+// To use this version, rename this file to main.go and update go.mod
 
-// NOTE: This is the Encore version - replace imports with local versions for testing
-// import (
-// 	"context"
-// 	"encore.dev"
-// 	"encore.dev/rlog"
-// )
+package main
 
 import (
 	"context"
-	"log"
+
+	"encore.dev"
+	"encore.dev/rlog"
 )
 
-// Mock rlog for local development
-var rlog = struct {
-	Info func(msg string, args ...interface{})
-}{
-	Info: func(msg string, args ...interface{}) { log.Printf(msg, args...) },
-}
-
 // Service represents our main G.O.A.T Alliance service
-// In Encore: //encore:service
+//encore:service
 type Service struct{}
 
 // initService initializes the service
@@ -32,7 +23,7 @@ func initService() (*Service, error) {
 var service, _ = initService()
 
 // HealthCheck endpoint for basic health monitoring
-// In Encore: //encore:api public method=GET path=/health
+//encore:api public method=GET path=/health
 func (s *Service) HealthCheck(ctx context.Context) (*HealthResponse, error) {
 	return &HealthResponse{
 		Status:  "ok",
@@ -41,7 +32,7 @@ func (s *Service) HealthCheck(ctx context.Context) (*HealthResponse, error) {
 }
 
 // GetContractors returns a list of featured contractors
-// In Encore: //encore:api public method=GET path=/contractors
+//encore:api public method=GET path=/contractors
 func (s *Service) GetContractors(ctx context.Context) (*ContractorsResponse, error) {
 	contractors := []Contractor{
 		{
@@ -59,6 +50,14 @@ func (s *Service) GetContractors(ctx context.Context) (*ContractorsResponse, err
 			Specialties: []string{"Plumbing", "Emergency Repairs"},
 			Phone:       "+1-555-0102",
 			Email:       "info@precisionplumbing.com",
+		},
+		{
+			ID:          3,
+			Name:        "Supreme Electricians",
+			Rating:      5.0,
+			Specialties: []string{"Electrical", "Smart Home"},
+			Phone:       "+1-555-0103",
+			Email:       "service@supremeelectric.com",
 		},
 	}
 

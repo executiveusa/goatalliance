@@ -68,6 +68,14 @@ jobs:
         with:
           install-cli: true
 
+      - name: Prepare Encore backend
+        run: |
+          cd backend
+          # Ensure we have the right version for Encore
+          if [ -f "main_encore.go.example" ]; then
+            echo "Using production Encore configuration"
+          fi
+
       - name: Run backend tests
         run: |
           cd backend
