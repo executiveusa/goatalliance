@@ -10,24 +10,57 @@ node_modules/
 !.yarn/plugins
 !.yarn/releases
 !.yarn/versions
+/.npm
+.bower_components
+
+# Next.js build outputs
+.next/
+out/
+.swc/
+
+# Production builds
+build/
+dist/
+.output/
+.nuxt/
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.env*.local
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+/prisma/migrations/dev.db*
+/prisma/dev.db*
+
+# TypeScript
+*.tsbuildinfo
+next-env.d.ts
+.tsc/
 
 # Testing
 coverage/
 *.lcov
 /playwright-report/
 /test-results/
+.nyc_output/
+jest-coverage/
+__tests__/__coverage__/
 
-# Next.js
-.next/
-out/
-
-# Production builds
-build/
-dist/
-
-# Environment variables
-.env*
-.env*.local
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+lerna-debug.log*
 
 # Runtime data
 pids/
@@ -35,13 +68,9 @@ pids/
 *.seed
 *.pid.lock
 
-# Debug logs
-logs/
-*.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-.pnpm-debug.log*
+# Stripe CLI
+stripe-*
+.stripe/
 
 # OS generated files
 .DS_Store
@@ -52,21 +81,51 @@ yarn-error.log*
 ehthumbs.db
 Thumbs.db
 *.pem
+desktop.ini
 
-# IDE files
+# IDE and Editor files
 .vscode/
 .idea/
 *.swp
 *.swo
+*~
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+*.sublime-project
 
 # Temporary files
 tmp/
 temp/
 .tmp/
+.cache/
+.parcel-cache/
 
 # Vercel
 .vercel
+.vercel.json
 
-# TypeScript
-*.tsbuildinfo
-next-env.d.ts
+# TailwindCSS
+.tailwindcss-*
+
+# Lock files (keep one based on your package manager)
+# yarn.lock
+# pnpm-lock.yaml
+
+# ESLint cache
+.eslintcache
+
+# Prettier cache
+.prettiercache
+
+# Turbo
+.turbo/
+
+# Sentry
+.sentryclirc
+
+# Local development
+.local
