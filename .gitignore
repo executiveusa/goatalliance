@@ -39,6 +39,8 @@ backend/go.sum
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 # Comprehensive .gitignore for Next.js, TypeScript, Encore, and Vercel projects
 
+# Dependencies
+/node_modules
 # ===============================================
 # Dependencies
 # ===============================================
@@ -57,6 +59,23 @@ package-lock.json
 /.npm
 .bower_components
 
+# Testing
+/coverage
+/playwright-report/
+/test-results/
+
+# Next.js
+/.next/
+/out/
+
+# Production
+/build
+
+# Misc
+.DS_Store
+*.pem
+
+# Debug
 # Next.js build outputs
 .next/
 out/
@@ -161,6 +180,10 @@ pids/
 *.seed
 *.pid.lock
 
+# Local env files
+.env*
+
+# Vercel
 # Stripe CLI
 stripe-*
 .stripe/
@@ -220,6 +243,7 @@ var/sessions/
 encore.lock
 webpack-encore.config.js.local
 
+# TypeScript
 # ===============================================
 # TypeScript Compilation
 # ===============================================
