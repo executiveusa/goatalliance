@@ -37,9 +37,13 @@ next-env.d.ts
 # Backend
 backend/go.sum
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+# Comprehensive .gitignore for Next.js, TypeScript, Encore, and Vercel projects
 
+# ===============================================
 # Dependencies
+# ===============================================
 node_modules/
+package-lock.json
 /.pnp
 .pnp.js
 .pnp.*
@@ -61,25 +65,9 @@ pnpm-lock.yaml*
 bun.lockb
 .bun/
 
-# Package manager logs
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-lerna-debug.log*
-
-# Testing
-coverage/
-*.lcov
-/playwright-report/
-/test-results/
-/.nyc_output
-junit.xml
-test-report.xml
-
-# Jest
-/coverage
-/.jest
-
+# ===============================================
+# Build Outputs
+# ===============================================
 # Next.js
 .next/
 out/
@@ -92,43 +80,41 @@ dist/
 .nuxt/
 .nitro/
 
-# Environment variables
+# Turbopack
+.turbo/
+
+# SWC
+.swc/
+
+# Build artifacts
+*.tgz
+*.tar.gz
+storybook-static/
+docs/build/
+
+# ===============================================
+# Environment Variables
+# ===============================================
 .env
 .env*.local
 .env.development
 .env.test
 .env.production
 .env.staging
+.env.local.example
 
-# Prisma
-prisma/dev.db*
-prisma/*.db*
-prisma/migrations/**/migration.sql.bak
+# ===============================================
+# Logs and Debugging
+# ===============================================
+# Debug logs
+logs/
+*.log
 
-# Database
-*.sqlite
-*.sqlite3
-*.db
-
-# Cache directories
-.cache/
-.parcel-cache/
-.eslintcache
-.stylelintcache
-.rpt2_cache/
-.rts2_cache_cjs/
-.rts2_cache_es/
-.rts2_cache_umd/
-
-# TypeScript
-*.tsbuildinfo
-.tscache/
-
-# Turbopack
-.turbo/
-
-# SWC
-.swc/
+# Package manager logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
 
 # Runtime data
 pids/
@@ -136,10 +122,9 @@ pids/
 *.seed
 *.pid.lock
 
-# Debug logs
-logs/
-*.log
-
+# ===============================================
+# OS and IDE Files
+# ===============================================
 # OS generated files
 .DS_Store
 .DS_Store?
@@ -153,6 +138,7 @@ $RECYCLE.BIN/
 
 # IDE and editor files
 .vscode/
+!.vscode/settings.json
 .idea/
 *.swp
 *.swo
@@ -161,15 +147,85 @@ $RECYCLE.BIN/
 .classpath
 .settings/
 .metadata/
+.history/
 
-# Temporary files
+# ===============================================
+# Vercel Deployment Files
+# ===============================================
+.vercel
+.vercel.json
+
+# ===============================================
+# Encore Specific Files
+# ===============================================
+# Encore build outputs
+public/build/
+var/cache/
+var/logs/
+var/sessions/
+
+# Encore configuration
+encore.lock
+webpack-encore.config.js.local
+
+# ===============================================
+# TypeScript Compilation
+# ===============================================
+*.tsbuildinfo
+.tscache/
+
+# ===============================================
+# Test Coverage
+# ===============================================
+coverage/
+*.lcov
+/playwright-report/
+/test-results/
+/.nyc_output
+junit.xml
+test-report.xml
+
+# Jest
+/coverage
+/.jest
+
+# ===============================================
+# Temporary Files
+# ===============================================
 tmp/
 temp/
 .tmp/
 *.tmp
 *.temp
 
-# Security and certificates
+# ===============================================
+# Cache Directories
+# ===============================================
+.cache/
+.parcel-cache/
+.eslintcache
+.stylelintcache
+.rpt2_cache/
+.rts2_cache_cjs/
+.rts2_cache_es/
+.rts2_cache_umd/
+
+# ===============================================
+# Database Files
+# ===============================================
+# Prisma
+prisma/dev.db*
+prisma/*.db*
+prisma/migrations/**/migration.sql.bak
+
+# Database files
+*.sqlite
+*.sqlite3
+*.db
+
+# ===============================================
+# Security and Certificates
+# ===============================================
 *.pem
 *.key
 *.cert
@@ -180,29 +236,27 @@ temp/
 secrets.txt
 private.key
 
-# Cloud deployment
-.vercel
+# ===============================================
+# Cloud Deployment
+# ===============================================
 .netlify/
 .firebase/
 .awcache/
 .serverless/
 
+# ===============================================
 # Docker
+# ===============================================
 Dockerfile.local
 docker-compose.override.yml
 .dockerignore.local
 
-# Local development
-.env.local.example
+# ===============================================
+# Local Development
+# ===============================================
 local.settings.json
-.vscode/settings.json
-.history/
 
-# Build artifacts
-*.tgz
-*.tar.gz
-storybook-static/
-docs/build/
-
-# Monitoring and analytics
+# ===============================================
+# Monitoring and Analytics
+# ===============================================
 .sentryclirc
