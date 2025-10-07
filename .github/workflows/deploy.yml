@@ -63,10 +63,8 @@ jobs:
         with:
           go-version: ${{ env.GO_VERSION }}
 
-      - name: Setup Encore
-        uses: encoredev/setup-encore@v1
-        with:
-          install-cli: true
+      - name: Install Encore CLI
+        run: curl -L https://encore.dev/install.sh | bash
 
       - name: Prepare Encore backend
         run: |
@@ -126,10 +124,8 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup Encore
-        uses: encoredev/setup-encore@v1
-        with:
-          install-cli: true
+      - name: Install Encore CLI
+        run: curl -L https://encore.dev/install.sh | bash
 
       - name: Deploy to Encore production
         run: |
