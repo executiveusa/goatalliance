@@ -153,6 +153,10 @@ SMTP_HOST="smtp.gmail.com"
 SMTP_PORT="587"
 SMTP_USER="your-email@gmail.com"
 SMTP_PASS="your-app-password"
+
+# Printify
+PRINTIFY_API_TOKEN="your-printify-jwt-token"
+PRINTIFY_SHOP_ID="your-printify-shop-id"
 ```
 
 ## Scripts
