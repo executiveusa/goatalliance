@@ -9,4 +9,7 @@
   "env": {
     "VERCEL_TOKEN": "@vercel-token"
   }
+  "buildCommand": "yarn build",
+  "framework": "nextjs",
+  "installCommand": "yarn install --frozen-lockfile"
 }

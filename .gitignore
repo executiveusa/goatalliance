@@ -1,5 +1,26 @@
 # Dependencies
 node_modules/
+/node_modules
+/.pnp
+.pnp.js
+
+# Testing
+/coverage
+/playwright-report/
+/test-results/
+
+# Next.js
+/.next/
+/out/
+
+# Production
+/build
+
+# Misc
+.DS_Store
+*.pem
+
+# Debug
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
@@ -15,6 +36,155 @@ build/
 # .env
 # .env.local
 # .env.production
+# Local env files
+.env*.local
+
+# Vercel
+.vercel
+
+# TypeScript
+*.tsbuildinfo
+next-env.d.ts
+
+# Backend
+backend/go.sum
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+# Comprehensive .gitignore for Next.js, TypeScript, Encore, and Vercel projects
+
+# Dependencies
+/node_modules
+# ===============================================
+# Dependencies
+# ===============================================
+node_modules/
+package-lock.json
+/.pnp
+.pnp.js
+.pnp.*
+
+# Yarn
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
+/.npm
+.bower_components
+
+# Testing
+/coverage
+/playwright-report/
+/test-results/
+
+# Next.js
+/.next/
+/out/
+
+# Production
+/build
+
+# Misc
+.DS_Store
+*.pem
+
+# Debug
+# Next.js build outputs
+.next/
+out/
+.swc/
+.yarnrc.yml
+
+# pnpm
+.pnpm-store/
+.pnpm-debug.log*
+pnpm-lock.yaml*
+
+# Bun
+bun.lockb
+.bun/
+
+# ===============================================
+# Build Outputs
+# ===============================================
+# Next.js
+.next/
+out/
+next-env.d.ts
+
+# Production builds
+build/
+dist/
+.output/
+.nuxt/
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.env*.local
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+/prisma/migrations/dev.db*
+/prisma/dev.db*
+
+# TypeScript
+*.tsbuildinfo
+next-env.d.ts
+.tsc/
+
+# Testing
+coverage/
+*.lcov
+/playwright-report/
+/test-results/
+.nyc_output/
+jest-coverage/
+__tests__/__coverage__/
+
+# Logs
+.nitro/
+
+# Turbopack
+.turbo/
+
+# SWC
+.swc/
+
+# Build artifacts
+*.tgz
+*.tar.gz
+storybook-static/
+docs/build/
+
+# ===============================================
+# Environment Variables
+# ===============================================
+.env
+.env*.local
+.env.development
+.env.test
+.env.production
+.env.staging
+.env.local.example
+
+# ===============================================
+# Logs and Debugging
+# ===============================================
+# Debug logs
+logs/
+*.log
+
+# Package manager logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+lerna-debug.log*
 
 # Runtime data
 pids/
@@ -26,6 +196,17 @@ pids/
 logs/
 *.log
 
+# Local env files
+.env*
+
+# Vercel
+# Stripe CLI
+stripe-*
+.stripe/
+
+# ===============================================
+# OS and IDE Files
+# ===============================================
 # OS generated files
 .DS_Store
 .DS_Store?
@@ -52,3 +233,168 @@ coverage/
 
 # Encore specific
 encore.gen/
+*.pem
+desktop.ini
+
+# IDE and Editor files
+Desktop.ini
+$RECYCLE.BIN/
+
+# IDE and editor files
+.vscode/
+!.vscode/settings.json
+.idea/
+*.swp
+*.swo
+*~
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+*.sublime-project
+.settings/
+.metadata/
+.history/
+
+# ===============================================
+# Vercel Deployment Files
+# ===============================================
+.vercel
+.vercel.json
+
+# ===============================================
+# Encore Specific Files
+# ===============================================
+# Encore build outputs
+public/build/
+var/cache/
+var/logs/
+var/sessions/
+
+# Encore configuration
+encore.lock
+webpack-encore.config.js.local
+
+# TypeScript
+# ===============================================
+# TypeScript Compilation
+# ===============================================
+*.tsbuildinfo
+.tscache/
+
+# ===============================================
+# Test Coverage
+# ===============================================
+coverage/
+*.lcov
+/playwright-report/
+/test-results/
+/.nyc_output
+junit.xml
+test-report.xml
+
+# Jest
+/coverage
+/.jest
+
+# ===============================================
+# Temporary Files
+# ===============================================
+tmp/
+temp/
+.tmp/
+.cache/
+.parcel-cache/
+
+# Vercel
+.vercel
+.vercel.json
+
+# TailwindCSS
+.tailwindcss-*
+
+# Lock files (keep one based on your package manager)
+# yarn.lock
+# pnpm-lock.yaml
+
+# ESLint cache
+.eslintcache
+
+# Prettier cache
+.prettiercache
+
+# Turbo
+.turbo/
+
+# Sentry
+.sentryclirc
+
+# Local development
+.local
+*.tmp
+*.temp
+
+# ===============================================
+# Cache Directories
+# ===============================================
+.cache/
+.parcel-cache/
+.eslintcache
+.stylelintcache
+.rpt2_cache/
+.rts2_cache_cjs/
+.rts2_cache_es/
+.rts2_cache_umd/
+
+# ===============================================
+# Database Files
+# ===============================================
+# Prisma
+prisma/dev.db*
+prisma/*.db*
+prisma/migrations/**/migration.sql.bak
+
+# Database files
+*.sqlite
+*.sqlite3
+*.db
+
+# ===============================================
+# Security and Certificates
+# ===============================================
+*.pem
+*.key
+*.cert
+*.csr
+*.crt
+*.p12
+*.pfx
+secrets.txt
+private.key
+
+# ===============================================
+# Cloud Deployment
+# ===============================================
+.netlify/
+.firebase/
+.awcache/
+.serverless/
+
+# ===============================================
+# Docker
+# ===============================================
+Dockerfile.local
+docker-compose.override.yml
+.dockerignore.local
+
+# ===============================================
+# Local Development
+# ===============================================
+local.settings.json
+
+# ===============================================
+# Monitoring and Analytics
+# ===============================================
+.sentryclirc
