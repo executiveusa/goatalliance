@@ -1,4 +1,5 @@
 # Dependencies
+node_modules/
 /node_modules
 /.pnp
 .pnp.js
@@ -24,6 +25,17 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
+# Production builds
+.next/
+out/
+dist/
+build/
+
+# Environment variables (keeping .env files for deployment config)
+# Uncomment these if you want to hide environment files:
+# .env
+# .env.local
+# .env.production
 # Local env files
 .env*.local
 
@@ -180,6 +192,10 @@ pids/
 *.seed
 *.pid.lock
 
+# Logs
+logs/
+*.log
+
 # Local env files
 .env*
 
@@ -199,6 +215,24 @@ stripe-*
 .Trashes
 ehthumbs.db
 Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Temporary files
+tmp/
+temp/
+.tmp/
+
+# Coverage reports
+coverage/
+*.lcov
+
+# Encore specific
+encore.gen/
 *.pem
 desktop.ini
 
