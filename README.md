@@ -6,6 +6,8 @@
 
 GOAT Alliance is a platform connecting top-tier professionals in a trusted network. The platform consists of a Next.js frontend optimized for Vercel deployment and an Encore.ts backend.
 
+> 📘 **Planning the Lovable Cloud upgrade?** See the [Upgraded Platform Design](docs/upgraded-platform-design.md) for the modernization blueprint covering the Vite/React stack, Lovable Cloud backend, and refreshed branding guidelines.
+
 ## 🚀 One-Click Deployment
 
 This project is configured for **one-click deployment** to Vercel:
