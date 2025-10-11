@@ -37,6 +37,16 @@ The GOAT Alliance platform is being refreshed to deliver a modern, modular exper
 ## Deployment & Infrastructure
 - **Primary Hosting**: Deploy backend services to Lovable Cloud, relying on its managed Postgres, auth, storage, and edge runtime.
 - **Frontend Hosting**: Deploy the Vite-built frontend on Lovable Cloud’s hosting platform, with Vercel maintained as an optional backup/CDN distribution path.
+  - **Switching Between Primary and Fallback Hosting**:
+    - **Criteria for Switching**: Initiate a switch to Vercel if Lovable Cloud experiences an outage, performance degradation, or during scheduled maintenance. Switch back to Lovable Cloud once service is restored and verified.
+    - **Process**:
+      1. **DNS Update**: Change DNS records (e.g., CNAME or A record) to point to the fallback (Vercel) or primary (Lovable Cloud) frontend as needed. Ensure TTL is set appropriately to minimize propagation delay.
+      2. **Environment Parity**: Confirm that all environment variables, secrets, and configuration files (e.g., `.env`, Infisical) are up-to-date and consistent across both hosting platforms.
+      3. **Cache Invalidation**: Invalidate CDN and edge caches on the target platform to ensure users receive the latest build after switching.
+      4. **Build Flags**: Verify that build flags and environment-specific settings (e.g., API endpoints, feature toggles) are correctly set for the target hosting environment.
+      5. **Verification**: Test critical user flows and monitor error logs to confirm successful deployment and operation on the new host.
+      6. **Rollback**: If issues are detected, revert DNS and configuration changes to restore service on the previous host.
+    - **Documentation**: Maintain a runbook or checklist for the switching process and update it as hosting configurations evolve.
 - **Environment Configuration**: Centralize API URLs, tokens, and keys using environment variables or a secrets manager; ensure no credentials are committed to version control.
   - Commit a `.env.example` file (with no secrets) listing all required environment variables for each environment (development, staging, production).
   - Reference the secrets manager path (e.g., Infisical, Lovable Cloud secrets) for actual secrets and onboarding instructions.
