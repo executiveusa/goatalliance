@@ -6,7 +6,7 @@ The GOAT Alliance platform is being refreshed to deliver a modern, modular exper
 ## Tech Stack Refresh
 - **Frontend**: Migrate from Next.js 15 to Vite + React 18 with TailwindCSS and shadcn/ui components for a leaner, component-driven UI layer.
 - **Backend**: Consolidate services on Lovable Cloud, leveraging its managed Supabase Postgres, built-in Auth, Storage, and Edge Functions.
-- **Data Access**: Retain Prisma (or adopt the Supabase client where appropriate) to interact with Postgres.
+- **Data Access**: Standardize on Prisma for all Postgres interactions to ensure consistent transactions, migrations, and typing. If the Supabase client is required for specific Lovable Cloud features (e.g., real-time subscriptions or storage), document those boundaries clearly in the codebase and architecture notes to prevent drift and duplicated logic.
 - **Payments**: Continue using Stripe for both one-time charges and recurring subscriptions.
 - **Secrets Management**: Store all credentials in environment variables (e.g., `.env`, Infisical) to avoid hard-coded secrets.
 
