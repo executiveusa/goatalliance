@@ -38,6 +38,8 @@ The GOAT Alliance platform is being refreshed to deliver a modern, modular exper
 - **Primary Hosting**: Deploy backend services to Lovable Cloud, relying on its managed Postgres, auth, storage, and edge runtime.
 - **Frontend Hosting**: Deploy the Vite-built frontend on Lovable Cloud’s hosting platform, with Vercel maintained as an optional backup/CDN distribution path.
 - **Environment Configuration**: Centralize API URLs, tokens, and keys using environment variables or a secrets manager; ensure no credentials are committed to version control.
+  - Commit a `.env.example` file (with no secrets) listing all required environment variables for each environment (development, staging, production).
+  - Reference the secrets manager path (e.g., Infisical, Lovable Cloud secrets) for actual secrets and onboarding instructions.
 
 ## Summary of Upgrades
 - Modernize architecture by separating repos and unifying backend services on Lovable Cloud.
