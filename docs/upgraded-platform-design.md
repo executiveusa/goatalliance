@@ -15,7 +15,7 @@ The GOAT Alliance platform is being refreshed to deliver a modern, modular exper
   - Web frontend (Vite/React).
   - Backend API and Lovable Cloud services.
   - Mobile application (React Native or mobile-specific frontend).
-- Share UI primitives via a common component library where appropriate.
+- Share UI primitives via a common component library, published as a private npm package using semantic versioning. The library will be managed in a dedicated repository, with release automation (CI/CD) to publish new versions to a private registry (e.g., GitHub Packages). All consuming projects will specify explicit version dependencies to ensure compatibility and avoid breaking changes.
 - Maintain compatibility with the existing Vercel deployment configuration as a fallback.
 
 ## Design & Branding Guidelines
