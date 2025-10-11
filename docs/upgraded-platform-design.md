@@ -30,7 +30,7 @@ The GOAT Alliance platform is being refreshed to deliver a modern, modular exper
 
 ## Feature Enhancements
 - **Group / Organizational Accounts**: Support team memberships via OAuth (Google Workspace, Microsoft) or invite flows. Utilize Lovable Cloud role tables to manage group assignments and category tags (e.g., “Enterprise”, “Top Contributor”).
-- **Membership Tiers**: Use Stripe Products/Plans for recurring memberships and one-time Ally Membership fees. Handle Stripe webhooks through Lovable Cloud functions to update membership statuses and send receipts.
+- **Membership Tiers**: Use Stripe Products/Prices for recurring memberships and one-time Ally Membership fees. Handle Stripe webhooks through Lovable Cloud functions to update membership statuses and send receipts.
 - **Category Management**: Flag premium members in the database upon successful payment and highlight them within directory listings while keeping styling consistent with the refreshed design system.
 
 ## Deployment & Infrastructure
