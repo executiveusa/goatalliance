@@ -26,6 +26,7 @@ The GOAT Alliance platform is being refreshed to deliver a modern, modular exper
   - Charcoal `#3C494E`
   - Keppel teal `#00B39F`
   - Saffron yellow `#EBC017`
+- **Accessibility Note:** Validate color contrast for text, UI elements, and states using these colors to meet WCAG 2.1 AA/AAA standards. Provide guidance and test for both light and dark variants to ensure accessible implementations across the design system.
 - Implement the palette through Tailwind configuration and shadcn/ui components to ensure consistent styling and brand voice.
 
 ## Feature Enhancements
