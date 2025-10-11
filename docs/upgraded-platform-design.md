@@ -48,4 +48,4 @@ The GOAT Alliance platform is being refreshed to deliver a modern, modular exper
 ## References
 - [GOAT Alliance README](../README.md)
 - Lovable.dev Universal Upgrade Plan (internal PDF)
-- Supabase/Lovable Cloud launch announcement (2025-09-29)
+- Supabase/Lovable Cloud launch announcement (2025-09-29) [Internal-only, not publicly available]
