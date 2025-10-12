@@ -10,6 +10,14 @@ The GOAT Alliance platform is being refreshed to deliver a modern, modular exper
 - **Payments**: Continue using Stripe for both one-time charges and recurring subscriptions.
 - **Secrets Management**: Store all credentials in environment variables (e.g., `.env`, Infisical) to avoid hard-coded secrets.
 
+### Vite Frontend Implementation Notes
+- **Project Shape**: Scaffold the UI in a dedicated repository (e.g., `goatalliance-web`). This repo already hosts an implementation in `frontend/` with `src/main.tsx` mounting the app and `src/routes` mirroring the legacy Next.js pages.
+- **Shared UI**: Publish shared shadcn/ui wrappers from a `@goat/ui` package to keep Tailwind tokens and branding consistent across web and mobile clients.
+- **State & Data**: Use the Supabase JavaScript client via a central `services/client.ts` module for auth, profile data, and real-time membership updates. Keep Stripe checkout helpers colocated in the same module so payment flows share configuration with Lovable webhooks.
+- **Styling**: Extend `tailwind.config.ts` with Lovable palette tokens (`charcoal`, `keppel`, `saffron`) and typography scale. Avoid ad-hoc CSS to maintain parity with other clients.
+- **Routing**: Adopt file-based routing through `@tanstack/router` or React Router to keep parity with nested layouts currently found in Next.js. This allows smooth migration of pages like the directory, compliance, and blog.
+- **Testing**: Configure Vitest + Testing Library for unit tests and Playwright for E2E parity with the legacy stack.
+
 ## Repository Strategy
 - Split the codebase into dedicated repositories for:
   - Web frontend (Vite/React).
@@ -50,6 +58,21 @@ The GOAT Alliance platform is being refreshed to deliver a modern, modular exper
 - **Environment Configuration**: Centralize API URLs, tokens, and keys using environment variables or a secrets manager; ensure no credentials are committed to version control.
   - Commit a `.env.example` file (with no secrets) listing all required environment variables for each environment (development, staging, production).
   - Reference the secrets manager path (e.g., Infisical, Lovable Cloud secrets) for actual secrets and onboarding instructions.
+
+### Lovable Cloud Integration Checklist
+1. **Supabase Setup**
+   - Enable Row Level Security (RLS) on membership tables with policies for individual and group accounts.
+   - Run Prisma migrations against the Lovable-provided Postgres instance via connection strings stored in secrets.
+2. **Auth Providers**
+   - Configure Lovable/Supabase Auth for email, Google Workspace, and Microsoft accounts to support organizational onboarding.
+   - Map Supabase roles to application roles (`member`, `premium_member`, `group_admin`).
+3. **Stripe Webhooks**
+   - Deploy a Lovable Edge Function to handle `checkout.session.completed`, `invoice.paid`, and `customer.subscription.updated` events.
+   - Update Supabase profiles with membership tier flags and renewal dates.
+4. **Observability**
+   - Enable Lovable log drains and set up alerting around failed webhooks, auth errors, and RLS violations.
+5. **Fallback Prep**
+   - Mirror environment variables in Vercel and keep DNS records documented for rapid host switching.
 
 ## Summary of Upgrades
 - Modernize architecture by separating repos and unifying backend services on Lovable Cloud.
