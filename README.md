@@ -1,322 +1,115 @@
-# GOAT Alliance
+# GOAT Alliance – Lovable Cloud Upgrade Track
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fexecutiveusa%2Fgoatalliance&env=VERCEL_TOKEN&envDescription=Vercel%20deployment%20token&envLink=https%3A%2F%2Fvercel.com%2Fdocs%2Fconcepts%2Fprojects%2Fenvironment-variables)
+GOAT Alliance connects clients with vetted service professionals. The legacy stack (Next.js + Encore.ts) is being modernized to a Vite + React frontend backed by Lovable Cloud’s managed Supabase services. This README captures the current state and outlines how the upgraded architecture fits together so every team can run the project locally or on Lovable without surprises.
 
-## Network of Vetted Professionals
+> 📘 **Need the full blueprint?** Review [docs/upgraded-platform-design.md](docs/upgraded-platform-design.md) for the end-to-end modernization strategy covering design guidelines, repository separation, and deployment runbooks.
 
-GOAT Alliance is a platform connecting top-tier professionals in a trusted network. The platform consists of a Next.js frontend optimized for Vercel deployment and an Encore.ts backend.
+## Architecture Overview
 
-> 📘 **Planning the Lovable Cloud upgrade?** See the [Upgraded Platform Design](docs/upgraded-platform-design.md) for the modernization blueprint covering the Vite/React stack, Lovable Cloud backend, and refreshed branding guidelines.
+| Area | Legacy Implementation | Lovable Upgrade Target |
+| --- | --- | --- |
+| Frontend | Next.js 15 App Router (monorepo) | Vite + React 18 with TailwindCSS & shadcn/ui components |
+| Backend | Encore.ts service (Go) | Lovable Cloud (Supabase Postgres, Auth, Edge Functions) |
+| Payments | Stripe one-time + subscriptions | Stripe (reused) with Lovable webhooks |
+| Auth | NextAuth.js | Lovable/Supabase Auth with optional OAuth providers |
+| Hosting | Vercel (frontend) + Encore Cloud (backend) | Lovable Cloud as primary, Vercel maintained as fallback |
 
-## 🚀 One-Click Deployment
+The repository currently contains the legacy Next.js implementation while the Vite-based UI is being introduced incrementally. Documentation and configuration already follow the new Lovable-first conventions so the Vite app can drop in with minimal friction.
 
-This project is configured for **one-click deployment** to Vercel:
-
-1. Click the "Deploy with Vercel" button above
-2. The Vercel token is pre-configured: `EjBjbF7mtHNgV6KXh7lTpLsL`
-3. Your frontend will be automatically deployed and configured
-
-## 🏗️ Project Structure
+## Repository Layout
 
 ```
 goatalliance/
-├── frontend/          # Next.js frontend application
-│   ├── src/app/       # App router pages
-│   ├── .env*          # Environment configurations
-│   └── package.json
-├── backend/           # Encore.ts backend API
-│   ├── api.ts         # API endpoints
-│   ├── encore.app     # Encore configuration
-│   └── package.json
-├── vercel.json        # Vercel deployment configuration
-└── .env*              # Project environment variables
+├── app/                # Legacy Next.js app router entry (to be migrated)
+├── components/         # Shared UI primitives (migrating to shadcn/ui style exports)
+├── docs/               # Architecture and design references
+├── frontend/           # Vite + React 18 implementation wired for Lovable Cloud
+├── backend/            # Encore.ts service (to be replaced by Lovable Cloud functions)
+├── prisma/             # Prisma schema & seeds (reusable with Supabase)
+├── public/             # Assets including Seattle hero imagery
+└── ...
 ```
 
-## 🔧 Development
+When the Vite UI is introduced it should live in its own repository (or package) as described in the upgrade plan, but the configuration below allows local development now.
 
-### Frontend (Next.js)
+## Local Development
+
+### 1. Lovable Cloud / Supabase Services
+
+1. Create a Lovable Cloud project (Supabase under the hood).
+2. Configure the following environment variables (see `.env.example` when added):
+   - `VITE_SUPABASE_URL`
+   - `VITE_SUPABASE_ANON_KEY`
+   - `VITE_STRIPE_PUBLISHABLE_KEY`
+   - `STRIPE_SECRET_KEY`
+   - `STRIPE_WEBHOOK_SECRET`
+3. Use Prisma against the Lovable Postgres database:
+   ```bash
+   npx prisma generate
+   npx prisma migrate deploy
+   ```
+
+### 2. Vite + React Frontend (upgrade target)
+
+The Lovable-ready web app now lives in [`frontend/`](frontend/):
+
 ```bash
 cd frontend
 npm install
+
+# start the Vite dev server on http://localhost:5173
 npm run dev
+
+# optional quality gates
+npm run lint
+npm run test
 ```
 
-### Backend (Encore.ts)
+Copy `.env.example` to `.env.local` (or `.env`) and populate the Supabase + Stripe keys shared by Lovable Cloud. API access is centralized inside `src/lib/supabase-client.ts`, keeping configuration reusable across web, edge functions, and future mobile clients.
+
+### 3. Legacy Next.js Frontend (reference implementation)
+
+Until the migration is complete the Next.js app can still be run:
+
 ```bash
-cd backend
 npm install
 npm run dev
 ```
 
-## 🌐 Environment Variables
-
-The project includes pre-configured environment variables:
-
-- **VERCEL_TOKEN**: `EjBjbF7mtHNgV6KXh7lTpLsL` (configured for deployment)
-- **NEXT_PUBLIC_API_URL**: Backend API endpoint
-- **NEXT_PUBLIC_APP_NAME**: Application name
-- **NEXT_PUBLIC_APP_DESCRIPTION**: Application description
-
-## 📡 API Endpoints
-
-The Encore.ts backend provides these endpoints:
-
-- `GET /health` - Health check
-- `GET /alliance/info` - Get alliance information
-- `POST /ping` - Connectivity test
-
-## 🚢 Deployment
-
-### Frontend to Vercel
-The frontend is optimized for Vercel deployment with:
-- Automatic builds via `vercel.json` configuration
-- Environment variable management
-- Next.js 13+ App Router support
-- TypeScript support
-
-### Backend to Encore Cloud
-The backend follows Encore.ts protocols:
-- Service-based architecture
-- Type-safe API endpoints
-- Built-in request validation
-- Cloud-native deployment ready
-
-## 🔐 Security
-
-- Environment variables are properly configured
-- CORS settings for frontend-backend communication
-- Type-safe API contracts
-- Production-ready configurations
-# G.O.A.T. Alliance
-
-Network of Vetted Professionals - Connect with the Greatest Of All Time contractors and service providers.
-
-## Project Structure
-
-This is a full-stack application with:
-
-- **Frontend**: Next.js 14 with TypeScript, Tailwind CSS, deployed to Vercel
-- **Backend**: Go service using Encore framework, deployed to Encore Cloud
-- **E2E Testing**: Playwright for comprehensive end-to-end testing
-- **CI/CD**: GitHub Actions with automated testing and deployment
-
-## Features
-
-### Landing Page
-- Hero section with call-to-action buttons
-- Featured contractor directory with ratings and contact information
-- Responsive design for desktop, tablet, and mobile
-- Accessibility compliance with proper ARIA labels and keyboard navigation
-
-### Compliance Page
-- Professional standards and verification process information
-- Contact form for compliance inquiries
-
-### Backend API
-- Health check endpoint
-- Contractor directory API
-- Encore-based microservice architecture
-
-## Development
-
-### Prerequisites
-- Node.js 18.x
-- Go 1.21
-- Yarn package manager
-
-### Frontend Development
-```bash
-yarn install
-yarn dev          # Start development server
-yarn build        # Build for production
-yarn test         # Run Jest tests
-yarn lint         # Run ESLint
-yarn type-check   # TypeScript checking
-```
-
-### Backend Development
-```bash
-cd backend
-go test ./...     # Run Go tests
-```
-
-### E2E Testing
-```bash
-yarn playwright install --with-deps
-yarn playwright test
-# G.O.A.T. ALLIANCE
-
-**NETWORK OF VETTED PROFESSIONALS**
-
-A production-ready Next.js 15 + TypeScript SaaS platform connecting clients with vetted professionals through a comprehensive directory system, premium contractor features, and subscription-based services.
-
-## Features
-
-- 🚀 **Next.js 15** with TypeScript and App Router
-- 🎨 **Modern UI** with Tailwind CSS and shadcn/ui components
-- 🔐 **Authentication** with NextAuth.js
-- 💾 **Database** with Prisma and PostgreSQL
-- 💳 **Payments** with Stripe (subscriptions & one-time)
-- 📱 **Responsive** design for all devices
-- 🏢 **Professional Directory** with search and filtering
-- 👑 **Premium Contractor** pages and features
-- 📊 **Admin Dashboard** for management
-- 📝 **Blog System** with Markdown CMS and SSR
-- ⚡ **Performance** optimized with caching and SEO
-
-## Getting Started
-
-1. **Install dependencies:**
-   ```bash
-   npm install
-   ```
-
-2. **Set up environment variables:**
-   ```bash
-   cp .env.example .env.local
-   # Edit .env.local with your configuration
-   ```
-
-3. **Set up the database:**
-   ```bash
-   npm run db:push
-   npm run db:seed
-   ```
-
-4. **Run the development server:**
-   ```bash
-   npm run dev
-   ```
-
-5. **Open [http://localhost:3000](http://localhost:3000)** with your browser.
-
-## Project Structure
-
-```
-├── app/                    # Next.js App Router
-│   ├── (auth)/            # Authentication pages
-│   ├── (marketing)/       # Landing page, blog
-│   ├── admin/             # Admin dashboard
-│   ├── directory/         # Professional listings
-│   ├── contractor/        # Contractor premium pages
-│   └── api/               # API routes
-├── components/            # Reusable UI components
-├── lib/                   # Utilities, database, auth config
-├── prisma/               # Database schema and migrations
-├── content/              # Blog markdown files
-├── public/               # Static assets
-└── types/                # TypeScript type definitions
-```
-
-## Tech Stack
-
-- **Framework:** Next.js 15 with TypeScript
-- **Styling:** Tailwind CSS + shadcn/ui
-- **Database:** Prisma + PostgreSQL
-- **Authentication:** NextAuth.js
-- **Payments:** Stripe
-- **Content:** Markdown with gray-matter
-- **Deployment:** Vercel (recommended)
-
-## Environment Variables
-
-```bash
-# Database
-DATABASE_URL="postgresql://..."
-
-# Authentication
-NEXTAUTH_URL="http://localhost:3000"
-NEXTAUTH_SECRET="your-secret-key"
-
-# OAuth Providers (optional)
-GOOGLE_CLIENT_ID="..."
-GOOGLE_CLIENT_SECRET="..."
-
-# Stripe
-STRIPE_PUBLISHABLE_KEY="pk_test_..."
-STRIPE_SECRET_KEY="sk_test_..."
-STRIPE_WEBHOOK_SECRET="whsec_..."
-
-# Email (optional)
-SMTP_HOST="smtp.gmail.com"
-SMTP_PORT="587"
-SMTP_USER="your-email@gmail.com"
-SMTP_PASS="your-app-password"
-
-# Printify
-PRINTIFY_API_TOKEN="your-printify-jwt-token"
-PRINTIFY_SHOP_ID="your-printify-shop-id"
-```
-
-## Scripts
-
-```bash
-npm run dev          # Start development server
-npm run build        # Build for production
-npm run start        # Start production server
-npm run lint         # Run ESLint
-npm run db:push      # Push schema to database
-npm run db:seed      # Seed database with sample data
-npm run stripe:listen # Listen for Stripe webhooks (dev)
-```
+This is useful for parity checks when porting pages/components to the new Vite UI.
 
 ## Deployment
 
-### Frontend (Vercel)
-Automatically deployed on push to main branch using Vercel GitHub integration.
+### Lovable Cloud (Primary)
 
-Environment variables required:
-- `NEXT_PUBLIC_SUPABASE_URL`
-- `NEXT_PUBLIC_SUPABASE_ANON_KEY` 
-- `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY`
-- `VERCEL_TOKEN`
-- `VERCEL_ORG_ID`
-- `VERCEL_PROJECT_ID`
+1. Connect the frontend repository in Lovable Cloud and set the environment variables described above.
+2. Point the Vite build output to Lovable hosting (`npm run build && npm run preview` during CI).
+3. Use Lovable Edge Functions (or Supabase Functions) to receive Stripe webhooks and update membership flags.
+4. Enable row-level security policies in Supabase to protect membership and group tables.
 
-### Backend (Encore)
-Automatically deployed on push to main branch using Encore CLI.
+### Vercel (Fallback)
 
-Environment variables required:
-- `ENCORE_TOKEN`
+The legacy Vercel workflow is retained. The “Deploy with Vercel” button remains valid, and the same environment variables can be reused. When switching hosts follow the runbook in [docs/upgraded-platform-design.md](docs/upgraded-platform-design.md#deployment--infrastructure).
 
-## CI/CD Pipeline
+## Stripe & Membership Tiers
 
-The GitHub Actions workflow includes:
-1. Frontend testing (lint, type-check, unit tests, build)
-2. Backend testing (Go tests with PostgreSQL)
-3. E2E testing (Playwright across multiple browsers)
-4. Deployment to production (Vercel + Encore)
-5. Discord notification on successful deployment
+Stripe integration stays unchanged but Lovable Cloud will now handle webhook processing:
 
-## Testing Strategy
+1. Define Products/Prices for one-time Ally memberships and recurring tiers (Professional, Enterprise, etc.).
+2. On successful checkout, Lovable functions update `membership_status`, `tier`, and `is_premium` flags inside Supabase.
+3. The frontend filters categories using these flags to highlight premium members while respecting the Lovable color palette and typography.
 
-- **Unit Tests**: Jest with React Testing Library for component testing
-- **Integration Tests**: Go testing framework for backend API testing
-- **E2E Tests**: Playwright covering user flows, accessibility, and performance
-- **Type Safety**: TypeScript with strict configuration
+## Design System Notes
 
-## Performance & Accessibility
+- Retain the Seattle skyline hero imagery and branded gradient background.
+- Adopt Lovable brand tokens through Tailwind configuration: Charcoal `#3C494E`, Keppel `#00B39F`, and Saffron `#EBC017`.
+- Replace bespoke components with shadcn/ui primitives to keep spacing, typography, and interactions consistent.
+- Keep a single primary CTA per hero section (“Join Now” or “Browse Members”) and group sponsor logos in balanced grids/carousels with generous whitespace.
 
-- Optimized Next.js build with static generation
-- Responsive design with Tailwind CSS
-- WCAG compliance with semantic HTML and ARIA labels
-- Performance monitoring with Core Web Vitals
-- Mobile-first responsive design
-This app is optimized for deployment on Vercel:
+## Additional Resources
 
-1. Push your code to GitHub
-2. Connect your repository to Vercel
-3. Add your environment variables
-4. Deploy!
+- [Upgraded Platform Design](docs/upgraded-platform-design.md) – authoritative guide for the Lovable migration.
+- `prisma/` – schema definitions ready for Supabase Postgres.
+- `backend/` – reference Encore implementation for any functionality that still needs to be ported to Lovable Cloud.
 
-## Contributing
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-## License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
+As the Vite implementation lands, update this README with repository links and concrete component references so the documentation stays in lockstep with the code.
