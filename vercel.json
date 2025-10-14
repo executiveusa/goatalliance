@@ -1,15 +1,11 @@
 {
   "version": 2,
-  "buildCommand": "cd frontend && npm run build",
-  "devCommand": "cd frontend && npm run dev",
-  "installCommand": "cd frontend && npm install",
-  "outputDirectory": "frontend/.next",
   "framework": "nextjs",
   "regions": ["iad1"],
+  "installCommand": "yarn install --frozen-lockfile",
+  "buildCommand": "yarn build",
+  "devCommand": "yarn dev",
   "env": {
     "VERCEL_TOKEN": "@vercel-token"
   }
-  "buildCommand": "yarn build",
-  "framework": "nextjs",
-  "installCommand": "yarn install --frozen-lockfile"
 }
