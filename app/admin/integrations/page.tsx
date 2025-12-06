@@ -6,8 +6,8 @@ import { Button } from '@/components/ui/button'
 interface TestResult {
   success: boolean
   message: string
-  shops?: any[]
-  data?: any
+  shops?: unknown[]
+  data?: unknown
   timestamp: string
   error?: string
 }
@@ -122,7 +122,7 @@ export default function PrintifyIntegrationsPage() {
                   <p className={productsData.success ? 'text-green-700' : 'text-red-700'}>
                     {productsData.message || 'Products fetched successfully'}
                   </p>
-                  {productsData.data && (
+                  {productsData.data !== undefined && (
                     <div className="mt-3">
                       <h4 className="font-medium text-green-800">Products Data:</h4>
                       <pre className="text-sm bg-green-100 p-2 rounded mt-2 overflow-x-auto max-h-64">

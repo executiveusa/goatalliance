@@ -4,6 +4,19 @@ GOAT Alliance connects clients with vetted service professionals. The legacy sta
 
 > 📘 **Need the full blueprint?** Review [docs/upgraded-platform-design.md](docs/upgraded-platform-design.md) for the end-to-end modernization strategy covering design guidelines, repository separation, and deployment runbooks.
 
+## 🆕 Admin Dashboard for Pacific Northwest Contractors
+
+A new contractor-focused admin dashboard has been added at `/admin`, specifically designed for roofing, painting, graffiti removal, and pressure washing contractors in the Pacific Northwest. 
+
+**Key Features:**
+- Real-time job and lead tracking
+- AI-powered insights and recommendations
+- Crew scheduling and utilization
+- Service-specific performance metrics
+- Guided onboarding tour
+
+**Learn More:** See [docs/ADMIN_DASHBOARD.md](docs/ADMIN_DASHBOARD.md) for full documentation.
+
 ## Architecture Overview
 
 | Area | Legacy Implementation | Lovable Upgrade Target |
