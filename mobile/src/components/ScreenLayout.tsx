@@ -98,7 +98,8 @@ const styles = StyleSheet.create({
     gap: 6,
     shadowColor: palette.charcoal,
     shadowOpacity: 0.35,
-    shadowRadius: 10
+    shadowRadius: 10,
+    shadowOffset: { width: 0, height: 4 }
   },
   adminText: {
     color: palette.white,
