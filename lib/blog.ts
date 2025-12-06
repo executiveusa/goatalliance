@@ -79,7 +79,7 @@ export async function getBlogPost(slug: string): Promise<BlogPost | null> {
       metaDescription: data.metaDescription,
       content: contentHtml,
     } as BlogPost
-  } catch (error) {
+  } catch {
     return null
   }
 }

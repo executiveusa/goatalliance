@@ -13,13 +13,18 @@ export class PrintifyAPI {
     this.apiToken = process.env.PRINTIFY_API_TOKEN || ''
     this.shopId = process.env.PRINTIFY_SHOP_ID || ''
     
+    // Token validation happens at runtime, not at build time
+    // Shop ID is optional - we can discover it from the API
+  }
+  
+  private ensureToken() {
     if (!this.apiToken) {
       throw new Error('PRINTIFY_API_TOKEN environment variable is required')
     }
-    // Shop ID is optional - we can discover it from the API
   }
 
   private async makeRequest(endpoint: string, options: RequestInit = {}) {
+    this.ensureToken()
     const url = `${PRINTIFY_API_BASE}${endpoint}`
     
     const response = await fetch(url, {
