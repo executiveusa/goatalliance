@@ -13,7 +13,10 @@ export class PrintifyAPI {
     this.apiToken = process.env.PRINTIFY_API_TOKEN || ''
     this.shopId = process.env.PRINTIFY_SHOP_ID || ''
     
-    // Token validation happens at runtime, not at build time
+    // Note: Token validation is deferred to runtime (ensureToken method) rather than
+    // in the constructor to prevent build-time failures when environment variables
+    // aren't available during Next.js static generation. This allows the module to
+    // be imported during build without requiring actual API credentials.
     // Shop ID is optional - we can discover it from the API
   }
   

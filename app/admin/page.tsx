@@ -92,11 +92,11 @@ export default function GoatDashboard() {
             <span className="text-sm text-gray-500 hidden md:inline">Pacific Northwest Contractors</span>
           </div>
           <div className="flex items-center space-x-4">
-            <Button variant="outline" size="sm" onClick={() => setShowTour(true)}>
+            <Button variant="outline" size="sm" onClick={() => setShowTour(true)} aria-label="Start guided tour">
               📖 Tour
             </Button>
-            <Button variant="ghost">⚙️ Settings</Button>
-            <Button variant="ghost">Logout</Button>
+            <Button variant="ghost" aria-label="Open settings">⚙️ Settings</Button>
+            <Button variant="ghost" aria-label="Logout">Logout</Button>
           </div>
         </div>
       </header>
@@ -154,13 +154,13 @@ export default function GoatDashboard() {
             <div className="mt-8 pt-6 border-t border-gray-200">
               <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">Quick Actions</h3>
               <div className="space-y-2">
-                <Button size="sm" className="w-full justify-start" variant="outline">
+                <Button size="sm" className="w-full justify-start" variant="outline" aria-label="Add new lead">
                   ➕ Add Lead
                 </Button>
-                <Button size="sm" className="w-full justify-start" variant="outline">
+                <Button size="sm" className="w-full justify-start" variant="outline" aria-label="Book new job">
                   📅 Book Job
                 </Button>
-                <Button size="sm" className="w-full justify-start" variant="outline">
+                <Button size="sm" className="w-full justify-start" variant="outline" aria-label="Launch AI lead triage">
                   🤖 Launch AI Triage
                 </Button>
               </div>
