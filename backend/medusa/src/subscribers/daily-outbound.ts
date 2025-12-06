@@ -4,17 +4,25 @@ type InjectedDependencies = {
   eventBusService: EventBusService;
 };
 
+/**
+ * Daily Outbound Campaign Subscriber
+ * 
+ * IMPORTANT: This is a placeholder structure. For production use, implement scheduling via:
+ * 1. External cron service (e.g., GitHub Actions, AWS CloudWatch Events)
+ * 2. Node-cron package (requires separate process or long-running service)
+ * 3. Railway Cron Jobs or similar platform features
+ * 
+ * Example with node-cron:
+ * ```
+ * import cron from 'node-cron';
+ * cron.schedule('0 9 * * *', async () => {
+ *   await new DailyOutboundSubscriber({ eventBusService }).runDailyOutbound();
+ * });
+ * ```
+ */
 class DailyOutboundSubscriber {
   constructor({ eventBusService }: InjectedDependencies) {
-    // Schedule daily at 9 AM (you would use a proper scheduler like node-cron in production)
-    // This is a placeholder for demonstration
-    console.log("Daily outbound subscriber initialized");
-    
-    // In production, you would set up a cron job or use Medusa's scheduled jobs
-    // For example with node-cron:
-    // cron.schedule('0 9 * * *', async () => {
-    //   await this.runDailyOutbound();
-    // });
+    console.log("Daily outbound subscriber initialized (requires external scheduling)");
   }
 
   async runDailyOutbound() {

@@ -103,7 +103,9 @@ export function BlogList({
               {post.title}
             </h2>
             {post.excerpt && (
-              <p className="text-slate-300 mb-4 line-clamp-3">{post.excerpt}</p>
+              <p className="text-slate-300 mb-4 line-clamp-3" title={post.excerpt}>
+                {post.excerpt}
+              </p>
             )}
             <div className="flex items-center justify-between text-sm text-slate-400">
               <time dateTime={post.published_at || undefined}>

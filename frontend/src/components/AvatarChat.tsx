@@ -35,12 +35,19 @@ export function AvatarChat({
   const [inputValue, setInputValue] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
   const avatarClientRef = useRef(
     createAvatarClient({
       medusaUrl,
       avatarId,
       regionId,
-      onError: (error) => console.error("Avatar error:", error),
+      onError: (error) => {
+        console.error("Avatar error:", error);
+        setErrorMessage(error.message || "An error occurred");
+        // Clear error after 5 seconds
+        setTimeout(() => setErrorMessage(null), 5000);
+      },
     })
   );
 
@@ -169,6 +176,12 @@ export function AvatarChat({
 
           {/* Messages */}
           <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-slate-950">
+            {/* Error Banner */}
+            {errorMessage && (
+              <div className="bg-red-900/20 border border-red-700 rounded-lg px-4 py-3 text-red-400 text-sm">
+                {errorMessage}
+              </div>
+            )}
             {messages.map((message) => (
               <div
                 key={message.id}

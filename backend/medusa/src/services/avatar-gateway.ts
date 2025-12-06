@@ -153,7 +153,11 @@ class AvatarGatewayService extends TransactionBaseService {
   }
 
   private generateConversationId(): string {
-    return `conv_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    // Use crypto.randomUUID if available, otherwise fallback to Math.random
+    if (typeof crypto !== 'undefined' && crypto.randomUUID) {
+      return `conv_${crypto.randomUUID()}`;
+    }
+    return `conv_${Date.now()}_${Math.random().toString(36).substring(2, 11)}`;
   }
 
   async getProducts(params: {

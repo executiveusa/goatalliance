@@ -165,8 +165,20 @@ export class MedusaAvatarClient {
 
   /**
    * Detect device type from user agent
+   * Prefers navigator.userAgentData when available, falls back to UA string parsing
    */
   private detectDevice(): DeviceType {
+    // Try modern User-Agent Client Hints API first
+    if ('userAgentData' in navigator && (navigator as any).userAgentData) {
+      const uaData = (navigator as any).userAgentData;
+      if (uaData.mobile) {
+        return "mobile";
+      }
+      // Note: tablet detection is limited with User-Agent Client Hints
+      // May require additional checks or CSS media queries
+    }
+
+    // Fallback to traditional UA string parsing
     const ua = navigator.userAgent;
     if (/(tablet|ipad|playbook|silk)|(android(?!.*mobi))/i.test(ua)) {
       return "tablet";
