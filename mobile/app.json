@@ -29,7 +29,6 @@
     "platforms": ["ios", "android", "web"],
     "updates": {
       "fallbackToCacheTimeout": 0
-    },
-    "newArchEnabled": true
+    }
   }
 }
