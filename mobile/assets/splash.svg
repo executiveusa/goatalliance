@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1242 2436" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0f172a"/>
+      <stop offset="1" stop-color="#1e293b"/>
+    </linearGradient>
+  </defs>
+  <rect width="1242" height="2436" fill="url(#bg)"/>
+  <circle cx="621" cy="1180" r="260" fill="#38bdf8" opacity="0.9"/>
+  <text x="50%" y="50%" text-anchor="middle" font-size="180" font-family="Arial, sans-serif" fill="#ffffff" font-weight="700">GOAT</text>
+  <text x="50%" y="58%" text-anchor="middle" font-size="64" font-family="Arial, sans-serif" fill="#e2e8f0" font-weight="500">Alliance</text>
+</svg>
