@@ -1,11 +1,11 @@
 {
   "expo": {
-    "name": "GOAT Alliance YAPP",
-    "slug": "goatalliance-yapp",
+    "name": "GOAT Alliance Mobile",
+    "slug": "goatalliance-mobile",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-    "userInterfaceStyle": "automatic",
+    "userInterfaceStyle": "dark",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
@@ -25,14 +25,8 @@
       "bundler": "metro",
       "output": "static",
       "favicon": "./assets/icon.svg"
-    }
-    "name": "GOAT Alliance Mobile",
-    "slug": "goatalliance-mobile",
-    "version": "1.0.0",
-    "orientation": "portrait",
-    "userInterfaceStyle": "dark",
+    },
     "platforms": ["ios", "android", "web"],
-    "assetBundlePatterns": ["**/*"],
     "updates": {
       "fallbackToCacheTimeout": 0
     },
