@@ -16,4 +16,13 @@
   "extends": "expo/tsconfig.base",
   "include": ["./src", "./App.tsx"],
   "exclude": ["node_modules"]
+  "extends": "expo/tsconfig.base",
+  "compilerOptions": {
+    "strict": true,
+    "baseUrl": "./",
+    "paths": {
+      "*": ["./src/*"]
+    }
+  },
+  "include": ["**/*.ts", "**/*.tsx"]
 }

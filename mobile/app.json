@@ -26,5 +26,16 @@
       "output": "static",
       "favicon": "./assets/icon.svg"
     }
+    "name": "GOAT Alliance Mobile",
+    "slug": "goatalliance-mobile",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "dark",
+    "platforms": ["ios", "android", "web"],
+    "assetBundlePatterns": ["**/*"],
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "newArchEnabled": true
   }
 }

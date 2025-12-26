@@ -4,15 +4,44 @@ GOAT Alliance connects clients with vetted service professionals. The legacy sta
 
 > 📘 **Need the full blueprint?** Review [docs/upgraded-platform-design.md](docs/upgraded-platform-design.md) for the end-to-end modernization strategy covering design guidelines, repository separation, and deployment runbooks.
 
+## 🆕 Admin Dashboard for Pacific Northwest Contractors
+
+A new contractor-focused admin dashboard has been added at `/admin`, specifically designed for roofing, painting, graffiti removal, and pressure washing contractors in the Pacific Northwest. 
+
+**Key Features:**
+- Real-time job and lead tracking
+- AI-powered insights and recommendations
+- Crew scheduling and utilization
+- Service-specific performance metrics
+- Guided onboarding tour
+
+**Learn More:** See [docs/ADMIN_DASHBOARD.md](docs/ADMIN_DASHBOARD.md) for full documentation.
+
+## 🛒 Medusa E-Commerce Store with Autonomous Sales Avatar
+
+A full-featured e-commerce platform powered by Medusa.js with an intelligent AI sales assistant has been integrated into the platform.
+
+**Key Features:**
+- Product catalog with variants and pricing
+- Blog module with markdown support and SEO
+- Autonomous sales avatar chat widget
+- Cart and checkout management
+- Customer accounts and order history
+- Stripe payment integration
+- Admin dashboard for content management
+
+**Learn More:** See [docs/MEDUSA_INTEGRATION.md](docs/MEDUSA_INTEGRATION.md) for complete setup and usage guide.
+
 ## Architecture Overview
 
-| Area | Legacy Implementation | Lovable Upgrade Target |
-| --- | --- | --- |
-| Frontend | Next.js 15 App Router (monorepo) | Vite + React 18 with TailwindCSS & shadcn/ui components |
-| Backend | Encore.ts service (Go) | Lovable Cloud (Supabase Postgres, Auth, Edge Functions) |
-| Payments | Stripe one-time + subscriptions | Stripe (reused) with Lovable webhooks |
-| Auth | NextAuth.js | Lovable/Supabase Auth with optional OAuth providers |
-| Hosting | Vercel (frontend) + Encore Cloud (backend) | Lovable Cloud as primary, Vercel maintained as fallback |
+| Area | Legacy Implementation | Lovable Upgrade Target | E-Commerce Addition |
+| --- | --- | --- | --- |
+| Frontend | Next.js 15 App Router (monorepo) | Vite + React 18 with TailwindCSS & shadcn/ui components | Avatar chat widget, Blog UI |
+| Backend | Encore.ts service (Go) | Lovable Cloud (Supabase Postgres, Auth, Edge Functions) | Medusa.js store with blog module |
+| Payments | Stripe one-time + subscriptions | Stripe (reused) with Lovable webhooks | Stripe via Medusa |
+| Auth | NextAuth.js | Lovable/Supabase Auth with optional OAuth providers | Medusa customer auth |
+| Hosting | Vercel (frontend) + Encore Cloud (backend) | Lovable Cloud as primary, Vercel maintained as fallback | Railway/Heroku for Medusa |
+| AI | — | — | Autonomous sales avatar (CrewAI/Yappiverse ready) |
 
 The repository currently contains the legacy Next.js implementation while the Vite-based UI is being introduced incrementally. Documentation and configuration already follow the new Lovable-first conventions so the Vite app can drop in with minimal friction.
 
@@ -23,8 +52,17 @@ goatalliance/
 ├── app/                # Legacy Next.js app router entry (to be migrated)
 ├── components/         # Shared UI primitives (migrating to shadcn/ui style exports)
 ├── docs/               # Architecture and design references
+│   ├── MEDUSA_INTEGRATION.md  # E-commerce store setup guide
+│   └── ...
 ├── frontend/           # Vite + React 18 implementation wired for Lovable Cloud
-├── backend/            # Encore.ts service (to be replaced by Lovable Cloud functions)
+│   └── src/
+│       ├── components/ # UI components (AvatarChat, BlogList)
+│       └── lib/        # TypeScript clients (medusa-avatar, medusa-blog)
+├── backend/            
+│   ├── medusa/         # Medusa.js e-commerce backend (NEW)
+│   │   ├── src/        # Blog module, Avatar gateway, API routes
+│   │   └── README.md   # Medusa-specific documentation
+│   └── ...             # Encore.ts service (to be replaced by Lovable Cloud)
 ├── prisma/             # Prisma schema & seeds (reusable with Supabase)
 ├── public/             # Assets including Seattle hero imagery
 └── ...
@@ -67,7 +105,33 @@ npm run test
 
 Copy `.env.example` to `.env.local` (or `.env`) and populate the Supabase + Stripe keys shared by Lovable Cloud. API access is centralized inside `src/lib/supabase-client.ts`, keeping configuration reusable across web, edge functions, and future mobile clients.
 
-### 3. Legacy Next.js Frontend (reference implementation)
+### 3. Medusa E-Commerce Backend
+
+The Medusa store provides product catalog, blog, and autonomous avatar features:
+
+```bash
+cd backend/medusa
+
+# Install dependencies
+npm install
+
+# Configure environment (requires PostgreSQL + Redis)
+cp .env.example .env
+# Edit .env with database URLs
+
+# Run migrations
+npm run migrate
+
+# Start Medusa server on http://localhost:9000
+npm run dev
+```
+
+Admin dashboard: http://localhost:9000/app  
+Storefront API: http://localhost:9000/store
+
+See [backend/medusa/README.md](backend/medusa/README.md) for detailed setup instructions.
+
+### 4. Legacy Next.js Frontend (reference implementation)
 
 Until the migration is complete the Next.js app can still be run:
 

@@ -53,7 +53,7 @@ export default function HeroSection() {
         transition: {
           delay: shouldReduceMotion ? 0 : index * 0.12 + 0.2,
           duration: shouldReduceMotion ? 0 : 0.6,
-          ease: [0.16, 1, 0.3, 1]
+          ease: [0.16, 1, 0.3, 1] as const
         }
       })
     }),
