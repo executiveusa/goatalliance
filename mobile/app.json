@@ -1,13 +1,13 @@
 {
   "expo": {
-    "name": "GOAT Alliance YAPP",
-    "slug": "goatalliance-yapp",
+    "name": "GOAT Alliance Mobile",
+    "slug": "goatalliance-mobile",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.svg",
-    "userInterfaceStyle": "automatic",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "dark",
     "splash": {
-      "image": "./assets/splash.svg",
+      "image": "./assets/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#0f172a"
     },
@@ -17,7 +17,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.svg",
+        "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#0f172a"
       }
     },
@@ -25,17 +25,10 @@
       "bundler": "metro",
       "output": "static",
       "favicon": "./assets/icon.svg"
-    }
-    "name": "GOAT Alliance Mobile",
-    "slug": "goatalliance-mobile",
-    "version": "1.0.0",
-    "orientation": "portrait",
-    "userInterfaceStyle": "dark",
+    },
     "platforms": ["ios", "android", "web"],
-    "assetBundlePatterns": ["**/*"],
     "updates": {
       "fallbackToCacheTimeout": 0
-    },
-    "newArchEnabled": true
+    }
   }
 }
