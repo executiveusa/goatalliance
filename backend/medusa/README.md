@@ -2,6 +2,10 @@
 
 E-commerce backend powered by Medusa.js with blog module and autonomous sales avatar integration.
 
+## GOAT Alliance Backend Studio
+
+The lead-generation backend studio lives in the main Next.js app (`app/api/studio`) and powers niches, landing pages, A/B testing, leads, and voice agent orchestration. See `docs/BACKEND_STUDIO.md` at the repo root for the API catalog and bootstrap instructions.
+
 ## Quick Start
 
 ### Prerequisites

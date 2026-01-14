@@ -33,6 +33,7 @@ Key integrations:
 - Map real Supabase tables or REST endpoints into the hooks.
 - Replace the placeholder PNG assets with branded icons and splash screens.
 - Extend the dashboard with secure auth (Supabase Auth) and protected routes.
+- Connect mobile dashboards to the Backend Studio endpoints in `app/api/studio` for niche, lead, and voice agent data.
 # Mobile app setup
 
 This project expects a Supabase backend to provide highlights content for the home screen.

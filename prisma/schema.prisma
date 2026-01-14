@@ -30,6 +30,65 @@ enum ContractorStatus {
   SUSPENDED
 }
 
+enum LandingPageStatus {
+  DRAFT
+  ACTIVE
+  PAUSED
+  ARCHIVED
+}
+
+enum LeadStatus {
+  NEW
+  CONTACTED
+  QUALIFIED
+  WON
+  LOST
+  DISQUALIFIED
+}
+
+enum LeadSource {
+  WEBSITE
+  REFERRAL
+  PAID_SEARCH
+  ORGANIC
+  SOCIAL
+  PARTNER
+  OTHER
+}
+
+enum ABTestStatus {
+  PLANNED
+  RUNNING
+  PAUSED
+  COMPLETED
+}
+
+enum VoiceAgentStatus {
+  ACTIVE
+  INACTIVE
+  TRAINING
+  ERROR
+}
+
+enum CallDirection {
+  INBOUND
+  OUTBOUND
+}
+
+enum CallStatus {
+  QUEUED
+  IN_PROGRESS
+  COMPLETED
+  FAILED
+  NO_ANSWER
+}
+
+enum TemplateStatus {
+  ACTIVE
+  INACTIVE
+  ARCHIVED
+}
+
 model User {
   id            String    @id @default(cuid())
   email         String    @unique
@@ -227,4 +286,203 @@ model BlogPost {
   author      User?    @relation(fields: [authorId], references: [id])
   
   @@map("blog_posts")
+}
+
+model Niche {
+  id          String   @id @default(cuid())
+  name        String
+  slug        String   @unique
+  description String?
+  isActive    Boolean  @default(true)
+
+  services     Service[]
+  landingPages LandingPage[]
+  leads        Lead[]
+  templates    SiteTemplate[]
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("niches")
+}
+
+model Service {
+  id          String   @id @default(cuid())
+  name        String
+  slug        String   @unique
+  description String?
+  isActive    Boolean  @default(true)
+  nicheId     String
+
+  niche       Niche    @relation(fields: [nicheId], references: [id], onDelete: Cascade)
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("services")
+}
+
+model LandingPage {
+  id          String            @id @default(cuid())
+  name        String
+  slug        String            @unique
+  nicheId     String
+  status      LandingPageStatus @default(DRAFT)
+  goal        String?
+  locale      String            @default("en-US")
+
+  niche       Niche             @relation(fields: [nicheId], references: [id], onDelete: Cascade)
+  variants    LandingVariant[]
+  abTests     ABTest[]
+  leads       Lead[]
+
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+
+  @@map("landing_pages")
+}
+
+model LandingVariant {
+  id          String   @id @default(cuid())
+  landingPageId String
+  name        String
+  slug        String
+  isControl   Boolean  @default(false)
+  trafficPercentage Int @default(50)
+  headline    String?
+  subheadline String?
+  content     Json?
+
+  landingPage LandingPage @relation(fields: [landingPageId], references: [id], onDelete: Cascade)
+  leads       Lead[]
+  abTestLinks ABTestVariant[]
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@unique([landingPageId, slug])
+  @@map("landing_variants")
+}
+
+model ABTest {
+  id          String       @id @default(cuid())
+  landingPageId String
+  name        String
+  status      ABTestStatus @default(PLANNED)
+  goal        String?
+  metric      String?
+  startsAt    DateTime?
+  endsAt      DateTime?
+
+  landingPage LandingPage  @relation(fields: [landingPageId], references: [id], onDelete: Cascade)
+  variants    ABTestVariant[]
+  leads       Lead[]
+
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  @@map("ab_tests")
+}
+
+model ABTestVariant {
+  id              String   @id @default(cuid())
+  abTestId        String
+  landingVariantId String
+  trafficPercentage Int    @default(50)
+  isControl       Boolean  @default(false)
+
+  abTest          ABTest         @relation(fields: [abTestId], references: [id], onDelete: Cascade)
+  landingVariant  LandingVariant @relation(fields: [landingVariantId], references: [id], onDelete: Cascade)
+
+  @@unique([abTestId, landingVariantId])
+  @@map("ab_test_variants")
+}
+
+model Lead {
+  id              String     @id @default(cuid())
+  nicheId         String
+  landingPageId   String?
+  landingVariantId String?
+  abTestId        String?
+  source          LeadSource @default(WEBSITE)
+  status          LeadStatus @default(NEW)
+  score           Int        @default(0)
+
+  name            String?
+  email           String?
+  phone           String?
+  serviceType     String?
+  message         String?
+  zipCode         String?
+  city            String?
+  state           String?
+  utm             Json?
+  metadata        Json?
+
+  niche           Niche          @relation(fields: [nicheId], references: [id], onDelete: Cascade)
+  landingPage     LandingPage?   @relation(fields: [landingPageId], references: [id], onDelete: SetNull)
+  landingVariant  LandingVariant? @relation(fields: [landingVariantId], references: [id], onDelete: SetNull)
+  abTest          ABTest?        @relation(fields: [abTestId], references: [id], onDelete: SetNull)
+  voiceCalls      VoiceCall[]
+
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+
+  @@map("leads")
+}
+
+model VoiceAgent {
+  id          String           @id @default(cuid())
+  name        String
+  provider    String
+  status      VoiceAgentStatus @default(INACTIVE)
+  phoneNumber String?
+  voice       String?
+  config      Json?
+
+  calls       VoiceCall[]
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("voice_agents")
+}
+
+model VoiceCall {
+  id           String        @id @default(cuid())
+  voiceAgentId String
+  leadId       String?
+  direction    CallDirection @default(INBOUND)
+  status       CallStatus    @default(QUEUED)
+  startedAt    DateTime?
+  endedAt      DateTime?
+  recordingUrl String?
+  transcript   String?
+  summary      String?
+  metadata     Json?
+
+  voiceAgent   VoiceAgent   @relation(fields: [voiceAgentId], references: [id], onDelete: Cascade)
+  lead         Lead?        @relation(fields: [leadId], references: [id], onDelete: SetNull)
+
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+
+  @@map("voice_calls")
+}
+
+model SiteTemplate {
+  id          String         @id @default(cuid())
+  name        String
+  slug        String         @unique
+  nicheId     String?
+  status      TemplateStatus @default(ACTIVE)
+  description String?
+  sections    Json?
+
+  niche       Niche?         @relation(fields: [nicheId], references: [id], onDelete: SetNull)
+
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+
+  @@map("site_templates")
 }
