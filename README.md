@@ -17,6 +17,20 @@ A new contractor-focused admin dashboard has been added at `/admin`, specificall
 
 **Learn More:** See [docs/ADMIN_DASHBOARD.md](docs/ADMIN_DASHBOARD.md) for full documentation.
 
+## 🧠 Backend Studio (Lead Gen + Smart Site Factory)
+
+The Backend Studio powers the dashboard’s lead pipeline, landing-page factory, A/B testing, and voice agent orchestration. It is designed to support high-quality lead generation for painting, roofing, pressure washing, and graffiti removal services.
+
+**Key Capabilities:**
+- Niche management and service catalogs
+- Landing page + variant management
+- A/B test setup and tracking
+- Lead intake with scoring + attribution
+- Voice agent management and call logging
+- Smart site template library
+
+**Quick Start:** Run `POST /api/studio/bootstrap` to seed niches, templates, and initial landing pages. See [docs/BACKEND_STUDIO.md](docs/BACKEND_STUDIO.md) for API details.
+
 ## 🛒 Medusa E-Commerce Store with Autonomous Sales Avatar
 
 A full-featured e-commerce platform powered by Medusa.js with an intelligent AI sales assistant has been integrated into the platform.

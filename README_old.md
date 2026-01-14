@@ -1,5 +1,9 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+## GOAT Alliance Backend Studio
+
+This repo now includes a backend studio layer for lead generation, landing page management, A/B testing, and voice agent orchestration. See `docs/BACKEND_STUDIO.md` for endpoint details and bootstrapping instructions.
+
 ## Getting Started
 
 First, run the development server:
