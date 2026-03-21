@@ -10,7 +10,7 @@ export async function PATCH(request: Request, { params }: RouteContext) {
   try {
     const body = await request.json()
 
-    const test = await db.abTest.update({
+    const test = await db.aBTest.update({
       where: { id: params.id },
       data: {
         name: body.name,
@@ -44,7 +44,7 @@ export async function PATCH(request: Request, { params }: RouteContext) {
 
 export async function DELETE(_request: Request, { params }: RouteContext) {
   try {
-    await db.abTest.delete({ where: { id: params.id } })
+    await db.aBTest.delete({ where: { id: params.id } })
 
     return NextResponse.json({
       success: true,
