@@ -4,7 +4,7 @@ import { db } from '@/lib/db'
 
 export async function GET() {
   try {
-    const tests = await db.abTest.findMany({
+    const tests = await db.aBTest.findMany({
       include: {
         landingPage: true,
         variants: {
@@ -46,7 +46,7 @@ export async function POST(request: Request) {
       )
     }
 
-    const test = await db.abTest.create({
+    const test = await db.aBTest.create({
       data: {
         landingPageId: body.landingPageId,
         name: body.name,

@@ -1,0 +1,21 @@
+{
+  "name": "@goat-alliance/mcp-vibe-cockpit",
+  "version": "1.0.0",
+  "description": "MCP server for Goat Alliance Vibe Cockpit CRM",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node index.js",
+    "dev": "tsx index.ts"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0",
+    "zod": "^3.22.4"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "tsx": "^4.7.0",
+    "typescript": "^5"
+  }
+}
