@@ -519,61 +519,61 @@ enum ContactSource {
 }
 
 model Contact {
-  id          String        @id @default(cuid())
-  businessId  String
-  name        String
-  phone       String?
-  email       String?
-  address     String?
-  city        String        @default("Seattle")
-  state       String        @default("WA")
-  status      ContactStatus @default(NEW)
-  source      ContactSource @default(WEBSITE)
-  tags        String        @default("[]") // JSON array stored as string for SQLite
-  notes       String?
-  totalRevenue Float        @default(0)
-  jobCount    Int           @default(0)
+  id            String        @id @default(cuid())
+  businessId    String        @map("business_id")
+  name          String
+  phone         String?
+  email         String?
+  address       String?
+  city          String        @default("Seattle")
+  state         String        @default("WA")
+  status        ContactStatus @default(NEW)
+  source        ContactSource @default(WEBSITE)
+  tags          String        @default("[]") // JSON array stored as string for SQLite
+  notes         String?
+  totalRevenue  Float         @default(0) @map("total_revenue")
+  jobCount      Int           @default(0) @map("job_count")
 
-  createdAt   DateTime      @default(now())
-  updatedAt   DateTime      @updatedAt
+  createdAt     DateTime      @default(now()) @map("created_at")
+  updatedAt     DateTime      @updatedAt @map("updated_at")
 
-  business     Business       @relation(fields: [businessId], references: [id], onDelete: Cascade)
-  appointments Appointment[]
+  business      Business      @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  appointments  Appointment[]
 
   @@map("contacts")
 }
 
 model Appointment {
-  id          String            @id @default(cuid())
-  businessId  String
-  contactId   String
-  title       String
-  service     String
-  scheduledAt DateTime
-  duration    Int               @default(60) // minutes
-  status      AppointmentStatus @default(SCHEDULED)
-  notes       String?
-  price       Float?
-  reminderSent Boolean         @default(false)
+  id            String            @id @default(cuid())
+  businessId    String            @map("business_id")
+  contactId     String            @map("contact_id")
+  title         String
+  service       String
+  scheduledAt   DateTime          @map("scheduled_at")
+  duration      Int               @default(60) // minutes
+  status        AppointmentStatus @default(SCHEDULED)
+  notes         String?
+  price         Float?
+  reminderSent  Boolean           @default(false) @map("reminder_sent")
 
-  createdAt   DateTime          @default(now())
-  updatedAt   DateTime          @updatedAt
+  createdAt     DateTime          @default(now()) @map("created_at")
+  updatedAt     DateTime          @updatedAt @map("updated_at")
 
-  business    Business    @relation(fields: [businessId], references: [id], onDelete: Cascade)
-  contact     Contact     @relation(fields: [contactId], references: [id], onDelete: Cascade)
+  business      Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  contact       Contact  @relation(fields: [contactId], references: [id], onDelete: Cascade)
 
   @@map("appointments")
 }
 
 model AnalyticsEvent {
   id          String   @id @default(cuid())
-  businessId  String
-  eventType   String   // lead_received, appointment_booked, job_completed, revenue_recorded
+  businessId  String   @map("business_id")
+  eventType   String   @map("event_type") // lead_received, appointment_booked, job_completed, revenue_recorded
   source      String?  // facebook, google, referral, etc.
   value       Float    @default(0)
   metadata    String   @default("{}") // JSON stored as string for SQLite
 
-  createdAt   DateTime @default(now())
+  createdAt   DateTime @default(now()) @map("created_at")
 
   business    Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
 
@@ -581,45 +581,45 @@ model AnalyticsEvent {
 }
 
 model Business {
-  id          String   @id @default(cuid())
-  name        String
-  slug        String   @unique
-  ownerName   String
-  phone       String?
-  email       String?
-  website     String?
-  city        String   @default("Seattle")
-  state       String   @default("WA")
-  niche       String   @default("general") // painter, plumber, roofer, etc.
-  avatarConfig String  @default("{}") // JSON stored as string for SQLite
-  plan        String   @default("starter") // starter, pro, agency
-  isActive    Boolean  @default(true)
+  id            String         @id @default(cuid())
+  name          String
+  slug          String         @unique
+  ownerName     String         @map("owner_name")
+  phone         String?
+  email         String?
+  website       String?
+  city          String         @default("Seattle")
+  state         String         @default("WA")
+  niche         String         @default("general") // painter, plumber, roofer, etc.
+  avatarConfig  String         @default("{}") @map("avatar_config") // JSON stored as string for SQLite
+  plan          String         @default("starter") // starter, pro, agency
+  isActive      Boolean        @default(true) @map("is_active")
 
   // Magic link auth
-  magicTokens MagicToken[]
+  magicTokens   MagicToken[]
 
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  createdAt     DateTime       @default(now()) @map("created_at")
+  updatedAt     DateTime       @updatedAt @map("updated_at")
 
-  contacts     Contact[]
-  appointments Appointment[]
-  analytics    AnalyticsEvent[]
+  contacts      Contact[]
+  appointments  Appointment[]
+  analytics     AnalyticsEvent[]
 
   @@map("businesses")
 }
 
 model MagicToken {
   id         String   @id @default(cuid())
-  businessId String
+  businessId String   @map("business_id")
   token      String   @unique
   phone      String?
   email      String?
-  expiresAt  DateTime
-  usedAt     DateTime?
+  expiresAt  DateTime @map("expires_at")
+  usedAt     DateTime? @map("used_at")
 
   business   Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
 
-  createdAt  DateTime @default(now())
+  createdAt  DateTime @default(now()) @map("created_at")
 
   @@map("magic_tokens")
 }

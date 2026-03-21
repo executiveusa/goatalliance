@@ -1,7 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { PrismaClient } from '@prisma/client'
-
-const prisma = new PrismaClient()
+import { db } from '@/lib/db'
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url)
@@ -13,7 +11,7 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    const appointments = await prisma.appointment.findMany({
+    const appointments = await db.appointment.findMany({
       where: {
         businessId,
         ...(upcoming ? { scheduledAt: { gte: new Date() } } : {})
@@ -26,7 +24,7 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ appointments, total: appointments.length })
   } catch (error) {
     console.error('GET /api/appointments error:', error)
-    return NextResponse.json({ appointments: [], total: 0 })
+    return NextResponse.json({ error: 'Failed to fetch appointments' }, { status: 500 })
   }
 }
 
@@ -42,7 +40,7 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const appointment = await prisma.appointment.create({
+    const appointment = await db.appointment.create({
       data: {
         businessId,
         contactId,
@@ -60,7 +58,7 @@ export async function POST(request: NextRequest) {
     })
 
     // Log analytics event
-    await prisma.analyticsEvent.create({
+    await db.analyticsEvent.create({
       data: {
         businessId,
         eventType: 'appointment_booked',
@@ -78,34 +76,51 @@ export async function POST(request: NextRequest) {
 export async function PATCH(request: NextRequest) {
   try {
     const body = await request.json()
-    const { id, status, ...rest } = body
+    const { id, title, service, scheduledAt, duration, notes, price, status, reminderSent } = body
 
     if (!id) return NextResponse.json({ error: 'id required' }, { status: 400 })
 
-    const appointment = await prisma.appointment.update({
+    // Get previous status to prevent double revenue recording
+    const previous = await db.appointment.findUnique({ where: { id } })
+    const wasCompleted = previous?.status === 'COMPLETED'
+
+    const appointment = await db.appointment.update({
       where: { id },
-      data: { status, ...rest },
+      data: {
+        ...(title && { title }),
+        ...(service && { service }),
+        ...(scheduledAt && { scheduledAt: new Date(scheduledAt) }),
+        ...(duration && { duration }),
+        ...(notes !== undefined && { notes }),
+        ...(price !== undefined && { price: price ? parseFloat(price) : null }),
+        ...(reminderSent !== undefined && { reminderSent }),
+        ...(status && { status }),
+      },
       include: { contact: { select: { id: true, name: true } } }
     })
 
-    // If completed, log revenue
-    if (status === 'COMPLETED' && appointment.price) {
-      await prisma.analyticsEvent.create({
-        data: {
-          businessId: appointment.businessId,
-          eventType: 'revenue_recorded',
-          value: appointment.price,
-        }
-      }).catch(() => {})
+    // Only log revenue if transitioning to COMPLETED for the first time
+    if (status === 'COMPLETED' && !wasCompleted && appointment.price) {
+      try {
+        await db.analyticsEvent.create({
+          data: {
+            businessId: appointment.businessId,
+            eventType: 'revenue_recorded',
+            value: appointment.price,
+          }
+        })
 
-      // Update contact revenue + job count
-      await prisma.contact.update({
-        where: { id: appointment.contactId },
-        data: {
-          totalRevenue: { increment: appointment.price },
-          jobCount: { increment: 1 },
-        }
-      }).catch(() => {})
+        // Update contact revenue + job count
+        await db.contact.update({
+          where: { id: appointment.contactId },
+          data: {
+            totalRevenue: { increment: appointment.price },
+            jobCount: { increment: 1 },
+          }
+        })
+      } catch (err) {
+        console.error('Failed to record revenue:', err)
+      }
     }
 
     return NextResponse.json({ appointment })

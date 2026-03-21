@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { PrismaClient } from '@prisma/client'
+import { db } from '@/lib/db'
 
-const prisma = new PrismaClient()
+
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url)
@@ -31,18 +31,18 @@ export async function GET(request: NextRequest) {
       periodRevenue,
       completedJobs,
     ] = await Promise.all([
-      prisma.contact.count({ where: { businessId } }),
-      prisma.analyticsEvent.count({
+      db.contact.count({ where: { businessId } }),
+      db.analyticsEvent.count({
         where: { businessId, eventType: 'lead_received', createdAt: { gte: periodStart } }
       }),
-      prisma.appointment.count({
+      db.appointment.count({
         where: { businessId, scheduledAt: { gte: periodStart, lte: now } }
       }),
-      prisma.analyticsEvent.aggregate({
+      db.analyticsEvent.aggregate({
         where: { businessId, eventType: 'revenue_recorded', createdAt: { gte: periodStart } },
         _sum: { value: true }
       }),
-      prisma.appointment.count({
+      db.appointment.count({
         where: { businessId, status: 'COMPLETED' }
       }),
     ])
@@ -84,7 +84,7 @@ export async function GET(request: NextRequest) {
 }
 
 async function getDailyBreakdown(businessId: string, since: Date) {
-  const events = await prisma.analyticsEvent.findMany({
+  const events = await db.analyticsEvent.findMany({
     where: { businessId, createdAt: { gte: since } },
     orderBy: { createdAt: 'asc' }
   })

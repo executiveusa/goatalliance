@@ -61,7 +61,7 @@ export default function AppointmentsList({ businessId, limit, showAll }: Appoint
 
   async function fetchAppointments() {
     try {
-      const res = await fetch(`/api/appointments?businessId=${businessId}`)
+      const res = await fetch(`/api/appointments?businessId=${businessId}&upcoming=true`)
       const data = await res.json()
       setAppointments(data.appointments?.length ? data.appointments : DEMO_APPOINTMENTS)
     } catch {

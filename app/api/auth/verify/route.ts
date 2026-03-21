@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { PrismaClient } from '@prisma/client'
+import { db } from '@/lib/db'
 
-const prisma = new PrismaClient()
+
 
 export async function POST(request: NextRequest) {
   try {
@@ -11,7 +11,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'token required' }, { status: 400 })
     }
 
-    const magicToken = await prisma.magicToken.findUnique({
+    const magicToken = await db.magicToken.findUnique({
       where: { token },
       include: { business: true }
     })
@@ -29,7 +29,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Mark token as used
-    await prisma.magicToken.update({
+    await db.magicToken.update({
       where: { id: magicToken.id },
       data: { usedAt: new Date() }
     })

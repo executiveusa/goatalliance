@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { PrismaClient } from '@prisma/client'
+import { db } from '@/lib/db'
 import crypto from 'crypto'
 
-const prisma = new PrismaClient()
+
 
 export async function POST(request: NextRequest) {
   try {
@@ -14,11 +14,11 @@ export async function POST(request: NextRequest) {
 
     // Find business by slug or use demo
     const slug = businessSlug || 'demo-biz'
-    let business = await prisma.business.findUnique({ where: { slug } })
+    let business = await db.business.findUnique({ where: { slug } })
 
     if (!business) {
       // Auto-create demo business for development
-      business = await prisma.business.create({
+      business = await db.business.create({
         data: {
           id: 'demo-biz',
           name: 'Seattle Pro Painters',
@@ -35,7 +35,7 @@ export async function POST(request: NextRequest) {
     const token = crypto.randomBytes(32).toString('hex')
     const expiresAt = new Date(Date.now() + 10 * 60 * 1000) // 10 minutes
 
-    await prisma.magicToken.create({
+    await db.magicToken.create({
       data: {
         businessId: business.id,
         token,

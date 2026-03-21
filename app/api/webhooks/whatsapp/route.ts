@@ -1,9 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server'
+import crypto from 'crypto'
 
 // WhatsApp Business API webhook
 // Handles incoming messages and routes to PopeBot command parser
 
 const WEBHOOK_VERIFY_TOKEN = process.env.WHATSAPP_WEBHOOK_SECRET || 'goat-alliance-dev'
+const WHATSAPP_APP_SECRET = process.env.WHATSAPP_APP_SECRET || ''
 
 // GET: Webhook verification by Meta
 export async function GET(request: NextRequest) {
@@ -23,7 +25,31 @@ export async function GET(request: NextRequest) {
 // POST: Incoming WhatsApp messages
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json()
+    // Verify Meta signature (optional but recommended for production)
+    if (WHATSAPP_APP_SECRET) {
+      const signature = request.headers.get('X-Hub-Signature-256')
+      const body = await request.text()
+
+      const expectedSignature = 'sha256=' + crypto
+        .createHmac('sha256', WHATSAPP_APP_SECRET)
+        .update(body)
+        .digest('hex')
+
+      if (signature !== expectedSignature) {
+        console.warn('Invalid WhatsApp signature')
+        return NextResponse.json({ error: 'Unauthorized' }, { status: 403 })
+      }
+
+      // Parse body after reading it
+      try {
+        var body = JSON.parse(body)
+      } catch {
+        return NextResponse.json({ error: 'Invalid JSON' }, { status: 400 })
+      }
+    } else {
+      // Dev mode: no signature verification
+      var body = await request.json()
+    }
 
     // Extract message from WhatsApp webhook payload
     const entry = body?.entry?.[0]

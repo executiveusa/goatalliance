@@ -156,10 +156,27 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       }
 
       case 'schedule_appointment': {
-        const { contactId, title, service, scheduledAt, duration, price, notes } = args as any
+        const { contactId, contactName, title, service, scheduledAt, duration, price, notes } = args as any
+
+        let finalContactId = contactId
+        if (!finalContactId && contactName) {
+          // Look up contact by name
+          const contactsRes = await apiCall('GET', `/api/contacts?businessId=${BUSINESS_ID}&search=${encodeURIComponent(contactName)}`)
+          const contacts = contactsRes.contacts || []
+          if (contacts.length > 0) {
+            finalContactId = contacts[0].id
+          } else {
+            return errorResult(`Contact "${contactName}" not found. Please use contactId instead.`)
+          }
+        }
+
+        if (!finalContactId) {
+          return errorResult('Either contactId or contactName is required')
+        }
+
         const res = await apiCall('POST', '/api/appointments', {
           businessId: BUSINESS_ID,
-          contactId: contactId || 'demo-contact',
+          contactId: finalContactId,
           title,
           service,
           scheduledAt,

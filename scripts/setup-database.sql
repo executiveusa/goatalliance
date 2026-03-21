@@ -154,7 +154,7 @@ INSERT INTO contacts (business_id, name, phone, email, source, status, total_rev
   ('demo-biz', 'Marcus Chen', '+1 (206) 555-0231', null, 'REFERRAL', 'NEW', 0, 0),
   ('demo-biz', 'Emily Torres', '+1 (206) 555-0177', 'emily.t@gmail.com', 'WEBSITE', 'ACTIVE', 1800, 2),
   ('demo-biz', 'Tom Park', '+1 (206) 555-0089', 'tom.park@email.com', 'FACEBOOK', 'VIP', 12400, 14)
-ON CONFLICT DO NOTHING;
+ON CONFLICT (id) DO NOTHING;
 
 -- ── Analytics: seed some events ───────────────────────────────────────────────
 INSERT INTO analytics_events (business_id, event_type, source, value) VALUES
@@ -166,7 +166,7 @@ INSERT INTO analytics_events (business_id, event_type, source, value) VALUES
   ('demo-biz', 'lead_received', 'FACEBOOK', 0),
   ('demo-biz', 'appointment_booked', null, 2400),
   ('demo-biz', 'revenue_recorded', null, 2400)
-ON CONFLICT DO NOTHING;
+ON CONFLICT (id) DO NOTHING;
 
 -- ============================================================
 -- Schema complete. Goat Alliance MVP is ready.
