@@ -1,5 +1,5 @@
 {
-  "name": "goatalliance",
+  "name": "pnw-ai-directory",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -17,7 +17,8 @@
     "db:push": "prisma db push",
     "db:seed": "tsx prisma/seed.ts",
     "db:studio": "prisma studio",
-    "stripe:listen": "stripe listen --forward-to localhost:3000/api/webhooks/stripe"
+    "stripe:listen": "stripe listen --forward-to localhost:3000/api/webhooks/stripe",
+    "content:check": "node -e \"console.log('Run markdown/frontmatter validation in CI')\""
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.1",
@@ -70,5 +71,6 @@
     "tailwindcss": "^4",
     "tsx": "^4.20.5",
     "typescript": "^5"
-  }
+  },
+  "description": "AI-readable Pacific Northwest contractor directory powered by Hermes/Paperclip operating loops."
 }

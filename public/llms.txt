@@ -1,0 +1,29 @@
+# PNW AI Directory
+
+> AI-readable contractor directory for the Pacific Northwest. Launch verticals: plumbers, HVAC contractors, roofers, painters, and pressure washers.
+
+PNW AI Directory helps homeowners, property managers, local organizations, and AI assistants understand which contractor data is verified, missing, claimed, or still demo-only.
+
+## Primary pages
+
+- Home: /
+- Directory: /directory
+- Blog: /blog
+- Community programs: /programs
+- Strategy: /strategy
+
+## Launch verticals
+
+- /directory/plumbers — emergency plumbing profile data, license fields, service radius, after-hours rules.
+- /directory/hvac — heat pumps, furnace repair, rebates, maintenance plans, emergency heat rules.
+- /directory/roofers — leak response, materials, roof types, storm windows, warranties.
+- /directory/painters — interior/exterior/cabinet painting, prep, low-VOC, lead-safe proof.
+- /directory/pressure-washers — soft wash, surface types, runoff controls, water-conscious cleaning.
+
+## Data policy
+
+Demo profiles are not verified businesses. Verified profiles require explicit proof checks before claims are published.
+
+## Social purpose
+
+Premium profiles subsidize community visibility, contractor education, cleanup projects, water-conscious work, weatherization education, and safer housing resources.

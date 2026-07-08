@@ -1,74 +1,57 @@
-import type { Metadata, Viewport } from "next"
-import Link from "next/link"
-import { GoogleAnalytics } from "@/components/analytics/google-analytics"
-import "./globals.css"
-
-const siteUrl = "https://www.goatalliance.com"
+import type { Metadata } from 'next'
+import './globals.css'
 
 export const metadata: Metadata = {
-  metadataBase: new URL(siteUrl),
   title: {
-    default: "G.O.A.T. Alliance | Network of Vetted Professionals",
-    template: "%s | G.O.A.T. Alliance"
+    default: 'PNW AI Directory — AI-readable contractor visibility',
+    template: '%s | PNW AI Directory'
   },
-  description:
-    "Connect with the Greatest Of All Time contractors, consultants, and service providers through our vetted premium directory.",
-  keywords: [
-    "GOAT Alliance",
-    "vetted professionals",
-    "contractor directory",
-    "premium consultants",
-    "trusted service providers"
-  ],
-  authors: [{ name: "G.O.A.T. Alliance" }],
-  creator: "G.O.A.T. Alliance",
-  publisher: "G.O.A.T. Alliance",
+  description: 'AI-readable contractor directory for Pacific Northwest plumbers, HVAC contractors, roofers, painters, and pressure washers.',
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://pnwaidirectory.com'),
   openGraph: {
-    type: "website",
-    siteName: "G.O.A.T. Alliance",
-    title: "G.O.A.T. Alliance | Network of Vetted Professionals",
-    description:
-      "Connect with the Greatest Of All Time professionals. Discover pre-vetted contractors, consultants, and service providers.",
-    url: siteUrl,
-    locale: "en_US"
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "G.O.A.T. Alliance | Network of Vetted Professionals",
-    description:
-      "Discover the Greatest Of All Time contractors, consultants, and service providers in our vetted marketplace."
-  },
-  alternates: {
-    canonical: siteUrl
-  },
-  robots: {
-    index: true,
-    follow: true
+    title: 'PNW AI Directory',
+    description: 'The AI-readable local contractor directory for the Pacific Northwest.',
+    images: ['/images/hero-ai-readable-directory.svg']
   }
 }
 
-export const viewport: Viewport = {
-  themeColor: "#0f172a"
-}
+const nav = [
+  { href: '/', label: 'Home' },
+  { href: '/directory', label: 'Directory' },
+  { href: '/blog', label: 'Field Notes' },
+  { href: '/programs', label: 'Community' },
+  { href: '/strategy', label: 'Strategy' }
+]
 
-export default function RootLayout({
-  children
-}: Readonly<{
-  children: React.ReactNode
-}>) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className="bg-slate-950 text-slate-100">
-      <body className="antialiased min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950">
-        <a
-          href="#main-content"
-          className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:rounded-lg focus:bg-white/90 focus:px-4 focus:py-2 focus:text-slate-900"
-        >
-          Skip to main content
-        </a>
-        <GoogleAnalytics />
+    <html lang="en">
+      <body className="bg-zinc-950 text-zinc-50 antialiased">
+        <header className="sticky top-0 z-50 border-b border-white/10 bg-zinc-950/90 backdrop-blur">
+          <nav className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4">
+            <a href="/" className="font-semibold tracking-tight">PNW AI Directory</a>
+            <div className="hidden items-center gap-6 text-sm text-zinc-300 md:flex">
+              {nav.map(item => <a key={item.href} href={item.href} className="hover:text-white">{item.label}</a>)}
+            </div>
+            <a href="/directory" className="rounded-full bg-emerald-400 px-4 py-2 text-sm font-semibold text-zinc-950 hover:bg-emerald-300">Get audited</a>
+          </nav>
+        </header>
         {children}
-        <footer className="sr-only" aria-hidden>
-          <Link href="/sitemap.xml">Sitemap</Link>
+        <footer className="border-t border-white/10 bg-zinc-950 px-5 py-12 text-sm text-zinc-400">
+          <div className="mx-auto grid max-w-7xl gap-8 md:grid-cols-4">
+            <div className="md:col-span-2">
+              <p className="text-lg font-semibold text-white">PNW AI Directory</p>
+              <p className="mt-3 max-w-xl">A social-purpose visibility system for local contractors. We make useful service data readable by people, search engines, and AI assistants without fake proof or pay-to-play trust claims.</p>
+            </div>
+            <div>
+              <p className="font-semibold text-white">Machine-readable</p>
+              <ul className="mt-3 space-y-2"><li><a href="/llms.txt">llms.txt</a></li><li><a href="/llms-full.txt">llms-full.txt</a></li><li><a href="/sitemap.xml">sitemap.xml</a></li></ul>
+            </div>
+            <div>
+              <p className="font-semibold text-white">Launch niches</p>
+              <p className="mt-3">Plumbing, HVAC, roofing, painting, and pressure washing.</p>
+            </div>
+          </div>
         </footer>
       </body>
     </html>

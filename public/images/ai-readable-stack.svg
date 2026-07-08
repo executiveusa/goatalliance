@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+  <title id="title">AI-readable Stack</title>
+  <desc id="desc">llms.txt, JSON-LD, markdown, sitemap, proof.</desc>
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#312e81"/>
+      <stop offset="1" stop-color="#111827"/>
+    </linearGradient>
+    <filter id="shadow"><feDropShadow dx="0" dy="24" stdDeviation="28" flood-opacity="0.22"/></filter>
+  </defs>
+  <rect width="1600" height="900" rx="48" fill="url(#g)"/>
+  <circle cx="1310" cy="170" r="260" fill="white" opacity="0.08"/>
+  <circle cx="260" cy="720" r="220" fill="white" opacity="0.07"/>
+  <path d="M120 640 C 360 420, 580 720, 820 500 S 1260 420, 1480 260" fill="none" stroke="#a5b4fc" stroke-width="7" opacity="0.55"/>
+  <g filter="url(#shadow)">
+    <rect x="118" y="130" width="1364" height="640" rx="40" fill="rgba(255,255,255,0.12)" stroke="rgba(255,255,255,0.35)"/>
+    <text x="160" y="250" fill="white" font-size="72" font-family="Inter, Arial, sans-serif" font-weight="800">AI-readable Stack</text>
+    <text x="164" y="324" fill="rgba(255,255,255,0.82)" font-size="34" font-family="Inter, Arial, sans-serif">llms.txt, JSON-LD, markdown, sitemap, proof.</text>
+    <g transform="translate(160 430)">
+      <rect x="0" y="0" width="340" height="170" rx="24" fill="rgba(0,0,0,0.20)"/>
+      <text x="28" y="62" fill="white" font-size="26" font-family="Inter, Arial, sans-serif" font-weight="700">AI-readable</text>
+      <text x="28" y="108" fill="rgba(255,255,255,0.75)" font-size="22" font-family="Inter, Arial, sans-serif">llms.txt • schema • proof</text>
+    </g>
+    <g transform="translate(540 430)">
+      <rect x="0" y="0" width="340" height="170" rx="24" fill="rgba(0,0,0,0.20)"/>
+      <text x="28" y="62" fill="white" font-size="26" font-family="Inter, Arial, sans-serif" font-weight="700">Human verified</text>
+      <text x="28" y="108" fill="rgba(255,255,255,0.75)" font-size="22" font-family="Inter, Arial, sans-serif">licenses • service areas</text>
+    </g>
+    <g transform="translate(920 430)">
+      <rect x="0" y="0" width="340" height="170" rx="24" fill="rgba(0,0,0,0.20)"/>
+      <text x="28" y="62" fill="white" font-size="26" font-family="Inter, Arial, sans-serif" font-weight="700">Community loop</text>
+      <text x="28" y="108" fill="rgba(255,255,255,0.75)" font-size="22" font-family="Inter, Arial, sans-serif">paid profiles fund impact</text>
+    </g>
+  </g>
+</svg>

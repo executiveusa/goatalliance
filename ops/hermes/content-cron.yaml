@@ -1,0 +1,27 @@
+# Hermes cron overlay for PNW AI Directory
+# Human approval required before sending outreach, publishing real contractor claims, charging, or changing production settings.
+
+jobs:
+  - id: daily_blog_refresh
+    schedule: "15 7 * * *"
+    timezone: "America/Los_Angeles"
+    agent: blog_agent
+    task: "Review yesterday's published post, refresh internal links, draft today's field note, and queue it for approval."
+
+  - id: daily_profile_gap_scan
+    schedule: "45 8 * * *"
+    timezone: "America/Los_Angeles"
+    agent: directory_research_agent
+    task: "Score candidate contractor profiles for missing AI-readable proof fields across plumbers, HVAC, roofers, painters, and pressure washers."
+
+  - id: weekly_black_swan_review
+    schedule: "0 10 * * 1"
+    timezone: "America/Los_Angeles"
+    agent: strategy_agent
+    task: "Run the Black Swan review: hidden buyers, hidden constraints, noncash leverage, grant openings, sponsor angles, and community project opportunities."
+
+  - id: friday_impact_report
+    schedule: "0 16 * * 5"
+    timezone: "America/Los_Angeles"
+    agent: impact_agent
+    task: "Summarize profiles published, content shipped, leads generated, community opportunities, grant leads, and next approval decisions."
