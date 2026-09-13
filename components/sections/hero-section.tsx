@@ -106,8 +106,21 @@ export default function HeroSection() {
           championship level.
         </p>
 
+        {/* AI-Native Banner */}
+        <div className="inline-flex items-center gap-2 bg-indigo-500/20 border border-indigo-500/40 rounded-full px-4 py-2 text-indigo-300 text-sm font-semibold mb-8">
+          <span className="w-2 h-2 rounded-full bg-indigo-400 animate-pulse" />
+          Now AI-Native — Powered by Avatar Auth + Vibe Cockpit CRM
+        </div>
+
         {/* CTA Buttons */}
         <div className="flex flex-col md:flex-row gap-6 justify-center items-center mb-16">
+          <Button
+            asChild
+            size="lg"
+            className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-bold px-8 py-4 text-lg shadow-2xl shadow-indigo-500/30 transform hover:scale-105 transition-all duration-300"
+          >
+            <Link href="/avatar">🤖 LOGIN VIA AVATAR</Link>
+          </Button>
           <Button
             asChild
             size="lg"
@@ -121,15 +134,7 @@ export default function HeroSection() {
             variant="outline"
             className="border-yellow-400/70 text-yellow-300 hover:bg-yellow-300/20 hover:text-black font-bold px-8 py-4 text-lg shadow-2xl transform hover:scale-105 transition-all duration-300"
           >
-            <Link href="/contractor/apply">💎 BECOME A G.O.A.T.</Link>
-          </Button>
-          <Button
-            asChild
-            size="lg"
-            variant="secondary"
-            className="text-slate-900 font-semibold"
-          >
-            <a href="tel:+18335554628" aria-label="Tap to call the concierge team">📞 Speak with concierge</a>
+            <Link href="/dashboard">📊 VIBE COCKPIT</Link>
           </Button>
         </div>
 

@@ -199,6 +199,9 @@ logs/
 # Local env files
 .env*
 
+# Workspace artifact from the uploaded source bundle
+_tmp/
+
 # Vercel
 # Stripe CLI
 stripe-*

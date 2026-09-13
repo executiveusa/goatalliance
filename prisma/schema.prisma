@@ -107,7 +107,9 @@ model User {
   contractor    Contractor?
   orders        Order[]
   subscriptions Subscription[]
-  
+  reviews       Review[]
+  blogPosts     BlogPost[]
+
   @@map("users")
 }
 
@@ -167,11 +169,11 @@ model Contractor {
   rating      Float?
   reviewCount Int              @default(0)
   
-  // Metadata
-  skills      String[]
+  // Metadata (stored as JSON strings for SQLite compatibility)
+  skills      String    @default("[]")
   experience  Int? // years of experience
-  portfolio   Json?
-  certifications String[]
+  portfolio   String?   // JSON stored as string
+  certifications String @default("[]")
   
   createdAt   DateTime         @default(now())
   updatedAt   DateTime         @updatedAt
@@ -485,4 +487,139 @@ model SiteTemplate {
   updatedAt   DateTime       @updatedAt
 
   @@map("site_templates")
+}
+
+// ============================================================
+// GOAT ALLIANCE MVP - Vibe Cockpit CRM Models
+// ============================================================
+
+enum AppointmentStatus {
+  SCHEDULED
+  CONFIRMED
+  COMPLETED
+  CANCELLED
+  NO_SHOW
+}
+
+enum ContactStatus {
+  NEW
+  ACTIVE
+  INACTIVE
+  VIP
+}
+
+enum ContactSource {
+  FACEBOOK
+  GOOGLE
+  REFERRAL
+  WEBSITE
+  WHATSAPP
+  PHONE
+  OTHER
+}
+
+model Contact {
+  id          String        @id @default(cuid())
+  businessId  String
+  name        String
+  phone       String?
+  email       String?
+  address     String?
+  city        String        @default("Seattle")
+  state       String        @default("WA")
+  status      ContactStatus @default(NEW)
+  source      ContactSource @default(WEBSITE)
+  tags        String        @default("[]") // JSON array stored as string for SQLite
+  notes       String?
+  totalRevenue Float        @default(0)
+  jobCount    Int           @default(0)
+
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  business     Business       @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  appointments Appointment[]
+
+  @@map("contacts")
+}
+
+model Appointment {
+  id          String            @id @default(cuid())
+  businessId  String
+  contactId   String
+  title       String
+  service     String
+  scheduledAt DateTime
+  duration    Int               @default(60) // minutes
+  status      AppointmentStatus @default(SCHEDULED)
+  notes       String?
+  price       Float?
+  reminderSent Boolean         @default(false)
+
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+
+  business    Business    @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  contact     Contact     @relation(fields: [contactId], references: [id], onDelete: Cascade)
+
+  @@map("appointments")
+}
+
+model AnalyticsEvent {
+  id          String   @id @default(cuid())
+  businessId  String
+  eventType   String   // lead_received, appointment_booked, job_completed, revenue_recorded
+  source      String?  // facebook, google, referral, etc.
+  value       Float    @default(0)
+  metadata    String   @default("{}") // JSON stored as string for SQLite
+
+  createdAt   DateTime @default(now())
+
+  business    Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+
+  @@map("analytics_events")
+}
+
+model Business {
+  id          String   @id @default(cuid())
+  name        String
+  slug        String   @unique
+  ownerName   String
+  phone       String?
+  email       String?
+  website     String?
+  city        String   @default("Seattle")
+  state       String   @default("WA")
+  niche       String   @default("general") // painter, plumber, roofer, etc.
+  avatarConfig String  @default("{}") // JSON stored as string for SQLite
+  plan        String   @default("starter") // starter, pro, agency
+  isActive    Boolean  @default(true)
+
+  // Magic link auth
+  magicTokens MagicToken[]
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  contacts     Contact[]
+  appointments Appointment[]
+  analytics    AnalyticsEvent[]
+
+  @@map("businesses")
+}
+
+model MagicToken {
+  id         String   @id @default(cuid())
+  businessId String
+  token      String   @unique
+  phone      String?
+  email      String?
+  expiresAt  DateTime
+  usedAt     DateTime?
+
+  business   Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+
+  createdAt  DateTime @default(now())
+
+  @@map("magic_tokens")
 }

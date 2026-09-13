@@ -1,0 +1,29 @@
+# PNW AI Directory Full Context
+
+PNW AI Directory is a social-purpose AI-readable contractor visibility system for the Pacific Northwest. It is built around five initial categories: plumbers, HVAC contractors, roofers, painters, and pressure washers.
+
+The directory is designed for four readers:
+
+1. Homeowners who need simple, reliable contractor information.
+2. Property managers who need service-area, response-time, and proof data.
+3. AI assistants and search systems that need structured, reliable pages.
+4. Community partners that need to identify local service capacity for safe housing, climate resilience, and neighborhood repair.
+
+## Core machine-readable objects
+
+- Organization schema on the home page.
+- Service schema on each vertical page.
+- LocalBusiness schema for verified contractor profiles.
+- Markdown blog posts for content ingestion.
+- Sitemap for page discovery.
+- llms.txt for LLM-specific orientation.
+
+## Verification levels
+
+- demo-seed: example profile or unverified lead record.
+- claimed: business owner has claimed the profile.
+- verified: proof has been checked and publication is approved.
+
+## Current MVP caution
+
+No seed profile should be represented as a real verified contractor. Do not infer phone numbers, addresses, reviews, ratings, partnerships, guarantees, or certifications unless verified.

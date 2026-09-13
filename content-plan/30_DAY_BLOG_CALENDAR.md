@@ -1,0 +1,32 @@
+# 30-Day Blog Calendar
+
+- 2026-06-08: [The Pacific Northwest Contractor Visibility Shift](../content/blog/the-pacific-northwest-contractor-visibility-shift.md) — strategy
+- 2026-06-09: [Why AI Search Changes Local Lead Generation](../content/blog/why-ai-search-changes-local-lead-generation.md) — strategy
+- 2026-06-10: [What llms.txt Means for Local Contractors](../content/blog/what-llms-txt-means-for-local-contractors.md) — strategy
+- 2026-06-11: [Plumber Profile Checklist for Emergency Leads](../content/blog/plumber-profile-checklist-for-emergency-leads.md) — plumbers
+- 2026-06-12: [HVAC Seasonal Demand Map for the PNW](../content/blog/hvac-seasonal-demand-map-for-the-pnw.md) — hvac
+- 2026-06-13: [Roofing Leads and Weather Windows](../content/blog/roofing-leads-and-weather-windows.md) — roofers
+- 2026-06-14: [Painter Portfolio Pages That AI Can Read](../content/blog/painter-portfolio-pages-that-ai-can-read.md) — painters
+- 2026-06-15: [Pressure Washing Before-and-After Proof System](../content/blog/pressure-washing-before-after-proof-system.md) — pressure-washers
+- 2026-06-16: [Contractor Data That Should Be Machine Readable](../content/blog/contractor-data-that-should-be-machine-readable.md) — strategy
+- 2026-06-17: [How to Build a Better Service Area Page](../content/blog/how-to-build-a-better-service-area-page.md) — strategy
+- 2026-06-18: [Why Reviews Are Not Enough Anymore](../content/blog/why-reviews-are-not-enough-anymore.md) — strategy
+- 2026-06-19: [The Property Manager Is the Hidden Buyer](../content/blog/the-property-manager-as-hidden-buyer.md) — strategy
+- 2026-06-20: [EcoWash Verified: A Better Lane for Pressure Washing](../content/blog/eco-wash-verified-pressure-washing.md) — pressure-washers
+- 2026-06-21: [Plumbing Content That Prevents Emergencies](../content/blog/plumbing-content-that-prevents-emergencies.md) — plumbers
+- 2026-06-22: [Heat Pump Pages That Answer Real Questions](../content/blog/heat-pump-pages-that-answer-real-questions.md) — hvac
+- 2026-06-23: [Roofing Trust Cues That Belong Above the Fold](../content/blog/roofing-trust-cues-that-belong-above-the-fold.md) — roofers
+- 2026-06-24: [Painting Copy Without Template Smell](../content/blog/painting-copy-without-template-smell.md) — painters
+- 2026-06-25: [The AI-Readable Contractor Profile Score](../content/blog/the-ai-readable-contractor-profile-score.md) — strategy
+- 2026-06-26: [Why Social Purpose Is a Growth Strategy](../content/blog/why-social-purpose-is-a-growth-strategy.md) — strategy
+- 2026-06-27: [Contractor Sponsorships Without Pay-to-Play Trust](../content/blog/contractor-sponsorships-without-pay-to-play-trust.md) — strategy
+- 2026-06-28: [The Hidden Value of Missing Data](../content/blog/the-hidden-value-of-missing-data.md) — strategy
+- 2026-06-29: [How Hermes Runs a Local Directory](../content/blog/how-hermes-runs-a-local-directory.md) — strategy
+- 2026-06-30: [Blogging for Contractors Without Fake Expertise](../content/blog/blogging-for-contractors-without-fake-expertise.md) — strategy
+- 2026-07-01: [How to Write a Plumbing City Page](../content/blog/how-to-write-a-plumbing-city-page.md) — plumbers
+- 2026-07-02: [How to Write an HVAC City Page](../content/blog/how-to-write-an-hvac-city-page.md) — hvac
+- 2026-07-03: [How to Write a Roofing City Page](../content/blog/how-to-write-a-roofing-city-page.md) — roofers
+- 2026-07-04: [How to Write a Painting City Page](../content/blog/how-to-write-a-painting-city-page.md) — painters
+- 2026-07-05: [How to Write a Pressure Washing City Page](../content/blog/how-to-write-a-pressure-washing-city-page.md) — pressure-washers
+- 2026-07-06: [The First 100 Contractor Profiles](../content/blog/the-first-100-contractor-profiles.md) — strategy
+- 2026-07-07: [The 30-Day Local AI Visibility Operating Loop](../content/blog/the-30-day-local-ai-visibility-operating-loop.md) — strategy

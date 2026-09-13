@@ -1,0 +1,35 @@
+company: PNW AI Directory
+purpose: AI-readable local contractor visibility with community reinvestment.
+verticals:
+  - plumbers
+  - hvac
+  - roofers
+  - painters
+  - pressure-washers
+operating_model:
+  control_plane: Paperclip
+  runtime_agent: Hermes
+  content_engine: markdown_blog
+  search_layer:
+    - llms.txt
+    - llms-full.txt
+    - sitemap.xml
+    - schema.org JSON-LD
+    - markdown posts
+human_approval_required_for:
+  - publishing real contractor claims
+  - outreach messages
+  - paid sponsorships
+  - grant applications
+  - production deploys
+  - account settings
+  - data licensing deals
+metrics:
+  - verified_profiles
+  - paid_profiles
+  - profile_audits_sold
+  - sponsor_pages_sold
+  - posts_published
+  - leads_generated
+  - community_projects_funded
+  - grant_opportunities_qualified
