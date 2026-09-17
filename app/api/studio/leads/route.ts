@@ -73,6 +73,7 @@ export async function POST(request: Request) {
         landingPageId: body.landingPageId,
         landingVariantId: body.landingVariantId,
         abTestId: body.abTestId,
+        exposureId: body.exposureId,
         source: body.source ?? 'WEBSITE',
         status: body.status ?? 'NEW',
         validation,

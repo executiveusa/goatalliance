@@ -382,12 +382,16 @@ model ABTest {
   status      ABTestStatus @default(PLANNED)
   goal        String?
   metric      String?
+  hypothesis  String?      // one hypothesis/variable per test (required to run)
+  plannedSampleSize Int?   // predefined sample; no early stopping below it
+  guardrails  String?      // attestation: no fake proof/urgency, hidden fees, a11y harm
   startsAt    DateTime?
   endsAt      DateTime?
 
   landingPage LandingPage  @relation(fields: [landingPageId], references: [id], onDelete: Cascade)
   variants    ABTestVariant[]
   leads       Lead[]
+  exposures   Exposure[]
 
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
@@ -404,6 +408,7 @@ model ABTestVariant {
 
   abTest          ABTest         @relation(fields: [abTestId], references: [id], onDelete: Cascade)
   landingVariant  LandingVariant @relation(fields: [landingVariantId], references: [id], onDelete: Cascade)
+  exposures       Exposure[]
 
   @@unique([abTestId, landingVariantId])
   @@map("ab_test_variants")
@@ -430,11 +435,13 @@ model Lead {
   state           String?
   utm             Json?
   metadata        Json?
+  exposureId      String?
 
   niche           Niche          @relation(fields: [nicheId], references: [id], onDelete: Cascade)
   landingPage     LandingPage?   @relation(fields: [landingPageId], references: [id], onDelete: SetNull)
   landingVariant  LandingVariant? @relation(fields: [landingVariantId], references: [id], onDelete: SetNull)
   abTest          ABTest?        @relation(fields: [abTestId], references: [id], onDelete: SetNull)
+  exposure        Exposure?      @relation(fields: [exposureId], references: [id], onDelete: SetNull)
   voiceCalls      VoiceCall[]
   estimates       Estimate[]
 
@@ -762,4 +769,23 @@ model ProjectEvidence {
   updatedAt       DateTime    @updatedAt
 
   @@map("project_evidence")
+}
+
+// Sticky visitor assignment: one exposure per visitor per test, with
+// the exact variant revision recorded so results stay attributable
+// even after a variant is edited mid-test.
+model Exposure {
+  id              String   @id @default(cuid())
+  abTestId        String
+  abTestVariantId String
+  visitorKey      String   // opaque, hashed upstream; never raw PII
+  revision        String   // variant identity + config marker at assignment
+  firstSeenAt     DateTime @default(now())
+
+  abTest          ABTest       @relation(fields: [abTestId], references: [id], onDelete: Cascade)
+  abTestVariant   ABTestVariant @relation(fields: [abTestVariantId], references: [id], onDelete: Cascade)
+  leads           Lead[]
+
+  @@unique([abTestId, visitorKey])
+  @@map("exposures")
 }
