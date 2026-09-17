@@ -39,3 +39,14 @@ describe('lead lifecycle', () => {
     expect(leadSourceToContactSource(undefined)).toBe('OTHER')
   })
 })
+
+describe('appointment lifecycle', () => {
+  it('flows SCHEDULED -> CONFIRMED -> COMPLETED', async () => {
+    const { canTransitionAppointment } = await import('@/lib/appointment-lifecycle')
+    expect(canTransitionAppointment('SCHEDULED', 'CONFIRMED')).toBe(true)
+    expect(canTransitionAppointment('CONFIRMED', 'COMPLETED')).toBe(true)
+    expect(canTransitionAppointment('SCHEDULED', 'COMPLETED')).toBe(false)
+    expect(canTransitionAppointment('COMPLETED', 'SCHEDULED')).toBe(false)
+    expect(canTransitionAppointment('CANCELLED', 'SCHEDULED')).toBe(true)
+  })
+})

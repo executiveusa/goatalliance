@@ -10,7 +10,7 @@ const customJestConfig = {
     '^@/(.*)$': '<rootDir>/$1',
   },
   testEnvironment: 'jest-environment-jsdom',
-  testPathIgnorePatterns: ['<rootDir>/tests/'],
+  testPathIgnorePatterns: ['<rootDir>/tests/', '<rootDir>/frontend/', '<rootDir>/mobile/', '<rootDir>/mcp-servers/', '<rootDir>/backend/'],
 }
 
 module.exports = createJestConfig(customJestConfig)

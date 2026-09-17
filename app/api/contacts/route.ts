@@ -9,6 +9,7 @@ export async function GET(request: NextRequest) {
   const businessId = searchParams.get('businessId')
   const search = searchParams.get('search') || ''
   const status = searchParams.get('status')
+  const tag = searchParams.get('tag')
 
   if (!businessId) {
     return NextResponse.json({ error: 'businessId required' }, { status: 400 })
@@ -19,6 +20,7 @@ export async function GET(request: NextRequest) {
       where: {
         businessId,
         ...(status ? { status: status as ContactStatus } : {}),
+        ...(tag ? { tags: { contains: `"${tag}"` } } : {}),
         ...(search ? {
           OR: [
             { name: { contains: search } },
