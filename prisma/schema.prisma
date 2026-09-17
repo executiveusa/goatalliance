@@ -499,6 +499,7 @@ model VoiceCall {
 
   voiceAgent   VoiceAgent   @relation(fields: [voiceAgentId], references: [id], onDelete: Cascade)
   lead         Lead?        @relation(fields: [leadId], references: [id], onDelete: SetNull)
+  contentDrafts ContentDraft[]
 
   createdAt    DateTime     @default(now())
   updatedAt    DateTime     @updatedAt
@@ -833,4 +834,44 @@ model FollowUp {
   lead        Lead             @relation(fields: [leadId], references: [id], onDelete: Cascade)
 
   @@map("follow_ups")
+}
+
+enum RedactionStatus {
+  PENDING
+  REDACTED
+  NEEDS_HUMAN_CHECK
+}
+
+enum ContentReviewStatus {
+  DRAFT
+  PENDING_REVIEW
+  APPROVED
+  REJECTED
+}
+
+// Call/transcript-to-content pipeline (Phlash digest): capture real
+// questions from the field, redact private data, extract language,
+// expert-review the facts, track freshness. APPROVED means ready for
+// the owner's copy pass - nothing publishes from this table.
+model ContentDraft {
+  id              String             @id @default(cuid())
+  voiceCallId     String?
+  question        String             // the real customer question being answered
+  extractedLanguage Json?            // phrases, objections, misconceptions
+  redactionStatus RedactionStatus    @default(PENDING)
+  redactedSource  String?            // redacted working copy; original stays on the call record
+  draftBody       String?            // placeholder/draft only - agent copy never ships
+  reviewStatus    ContentReviewStatus @default(DRAFT)
+  reviewer        String?            // expert who verified the facts
+  reviewedAt      DateTime?
+  reviewNotes     String?
+  freshnessAt     DateTime?          // facts verified as of
+  recheckAt       DateTime?          // stale after this date
+
+  voiceCall       VoiceCall?         @relation(fields: [voiceCallId], references: [id], onDelete: SetNull)
+
+  createdAt       DateTime           @default(now())
+  updatedAt       DateTime           @updatedAt
+
+  @@map("content_drafts")
 }
