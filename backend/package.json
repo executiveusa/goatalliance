@@ -11,8 +11,8 @@
   "license": "ISC",
   "description": "GOAT Alliance - Network of Vetted Professionals Backend API",
   "dependencies": {
-    "@types/node": "^24.3.1",
+    "@types/node": "^26.5.1",
     "encore.dev": "^1.50.0",
-    "typescript": "^5.9.2"
+    "typescript": "^7.0.2"
   }
 }
