@@ -3,6 +3,12 @@
 // or publishes a listing. Copy fields are placeholders pending
 // Bambu's own copy pass (his law: no agent-written copy on his sites).
 //
+// Phlash methodology constraints baked in:
+// - Monetization is the LAST build step: pilot ONE offer/cohort first.
+// - Paid placement is always a labeled sponsor slot, never editorial
+//   rank. No pay-to-win "best" lists.
+// - Every offer stores its proof/eligibility terms, not just a price.
+//
 // Activation requires ALL of:
 //   1. Real Stripe price IDs in env (STRIPE_PRICE_* below)
 //   2. STRIPE_SECRET_KEY set (test mode first)
@@ -11,13 +17,16 @@
 
 export interface Offer {
   id: string
-  kind: 'directory_tier' | 'landing_package' | 'lead_service'
+  kind: 'directory_tier' | 'sponsor_slot' | 'lead_fee' | 'growth_subscription'
   name: string
   placeholderCopy: true
-  interval: 'month' | 'one_time'
+  interval: 'month' | 'one_time' | 'per_qualified_lead'
   amountUsdCents: number
   stripePriceEnvVar: string
   features: string[]
+  sponsored: boolean          // true = labeled sponsor placement, kept out of editorial rank
+  pilot: boolean              // the single pilot offer for the first cohort
+  requiresProof: string[]     // verification that must exist before sale
 }
 
 export const OFFERS: Offer[] = [
@@ -30,36 +39,62 @@ export const OFFERS: Offer[] = [
     amountUsdCents: 0,
     stripePriceEnvVar: '',
     features: ['directory profile', 'review collection'],
+    sponsored: false,
+    pilot: false,
+    requiresProof: ['verified contact info'],
   },
   {
-    id: 'directory-featured',
+    // THE PILOT: one offer, one county cohort, per digest guidance.
+    id: 'directory-verified-profile',
     kind: 'directory_tier',
-    name: 'Featured',
+    name: 'Verified Profile',
     placeholderCopy: true,
     interval: 'month',
-    amountUsdCents: 4900,
-    stripePriceEnvVar: 'STRIPE_PRICE_DIRECTORY_FEATURED',
-    features: ['priority placement', 'verified badge review', 'lead alerts'],
+    amountUsdCents: 7900,
+    stripePriceEnvVar: 'STRIPE_PRICE_DIRECTORY_VERIFIED',
+    features: [
+      'credential + license verification maintained with recheck dates',
+      'project/proof evidence hosting',
+      'price-guidance fields',
+      'lead alerts',
+    ],
+    sponsored: false,
+    pilot: true,
+    requiresProof: ['license check', 'insurance check', 'review source audit'],
   },
   {
-    id: 'directory-premium',
-    kind: 'directory_tier',
-    name: 'Premium',
+    id: 'sponsor-slot',
+    kind: 'sponsor_slot',
+    name: 'Labeled Sponsor Slot',
     placeholderCopy: true,
     interval: 'month',
     amountUsdCents: 14900,
-    stripePriceEnvVar: 'STRIPE_PRICE_DIRECTORY_PREMIUM',
-    features: ['top of vertical', 'landing page included', 'monthly performance report'],
+    stripePriceEnvVar: 'STRIPE_PRICE_SPONSOR_SLOT',
+    features: [
+      'visibly labeled sponsored placement',
+      'never mixed into editorial rank',
+      'monthly performance report',
+    ],
+    sponsored: true,
+    pilot: false,
+    requiresProof: ['sponsorship disclosure rendered on page'],
   },
   {
-    id: 'landing-page-build',
-    kind: 'landing_package',
-    name: 'Landing Page Build',
+    id: 'qualified-lead-fee',
+    kind: 'lead_fee',
+    name: 'Qualified Lead Fee',
     placeholderCopy: true,
-    interval: 'one_time',
-    amountUsdCents: 49900,
-    stripePriceEnvVar: 'STRIPE_PRICE_LANDING_BUILD',
-    features: ['one niche landing page', 'two variants', 'A/B test setup'],
+    interval: 'per_qualified_lead',
+    amountUsdCents: 4500,
+    stripePriceEnvVar: 'STRIPE_PRICE_QUALIFIED_LEAD',
+    features: [
+      'charged only on valid, in-area, consented leads',
+      'duplicate/invalid leads credited',
+      'lead source lineage included',
+    ],
+    sponsored: false,
+    pilot: false,
+    requiresProof: ['lead validation pipeline live', 'refund terms in writing'],
   },
 ]
 
@@ -73,6 +108,8 @@ export function offerWithStatus(offer: Offer) {
     interval: offer.interval,
     amountUsdCents: offer.amountUsdCents,
     features: offer.features,
+    sponsored: offer.sponsored,
+    pilot: offer.pilot,
     purchasable: Boolean(priceId) && process.env.STRIPE_LIVE_ENABLED === 'true',
   }
 }

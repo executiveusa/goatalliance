@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server'
 
 import { db } from '@/lib/db'
 import { scoreLead } from '@/lib/lead-scoring'
+import { appendRevenueEvent } from '@/lib/revenue-events'
 
 export async function GET() {
   try {
@@ -50,6 +51,22 @@ export async function POST(request: Request) {
     const scoring = scoreLead(body)
     const scoringNote = `auto-score ${scoring.score}: ${scoring.reasons.join('; ')}`
 
+    // Duplicate check (Phlash: inspect invalid/duplicate/disputed leads
+    // before trusting lead counts). Same email or phone in the last 30
+    // days flags the lead DUPLICATE; it is kept for the audit trail.
+    const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)
+    const dupe = await db.lead.findFirst({
+      where: {
+        createdAt: { gte: thirtyDaysAgo },
+        OR: [
+          ...(body.email ? [{ email: body.email }] : []),
+          ...(body.phone ? [{ phone: body.phone }] : [])
+        ]
+      },
+      select: { id: true }
+    })
+    const validation = dupe ? 'DUPLICATE' : 'VALID'
+
     const lead = await db.lead.create({
       data: {
         nicheId: body.nicheId,
@@ -58,6 +75,7 @@ export async function POST(request: Request) {
         abTestId: body.abTestId,
         source: body.source ?? 'WEBSITE',
         status: body.status ?? 'NEW',
+        validation,
         score: typeof body.score === 'number' ? body.score : scoring.score,
         name: body.name,
         email: body.email,
@@ -70,9 +88,17 @@ export async function POST(request: Request) {
         utm: body.utm,
         metadata: {
           ...(body.metadata && typeof body.metadata === 'object' ? body.metadata : {}),
-          scoring: scoringNote
+          scoring: scoringNote,
+          ...(dupe ? { duplicateOf: dupe.id } : {})
         }
       }
+    })
+
+    await appendRevenueEvent({
+      kind: 'LEAD_CREATED',
+      leadId: lead.id,
+      source: lead.source,
+      metadata: { validation, score: lead.score }
     })
 
     return NextResponse.json({

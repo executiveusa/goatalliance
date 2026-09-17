@@ -408,6 +408,7 @@ model Lead {
   abTestId        String?
   source          LeadSource @default(WEBSITE)
   status          LeadStatus @default(NEW)
+  validation      LeadValidation @default(UNVALIDATED)
   score           Int        @default(0)
 
   name            String?
@@ -426,6 +427,7 @@ model Lead {
   landingVariant  LandingVariant? @relation(fields: [landingVariantId], references: [id], onDelete: SetNull)
   abTest          ABTest?        @relation(fields: [abTestId], references: [id], onDelete: SetNull)
   voiceCalls      VoiceCall[]
+  estimates       Estimate[]
 
   createdAt       DateTime       @default(now())
   updatedAt       DateTime       @updatedAt
@@ -539,6 +541,7 @@ model Contact {
 
   business     Business       @relation(fields: [businessId], references: [id], onDelete: Cascade)
   appointments Appointment[]
+  estimates    Estimate[]
 
   @@map("contacts")
 }
@@ -604,6 +607,7 @@ model Business {
   contacts     Contact[]
   appointments Appointment[]
   analytics    AnalyticsEvent[]
+  estimates    Estimate[]
 
   @@map("businesses")
 }
@@ -622,4 +626,74 @@ model MagicToken {
   createdAt  DateTime @default(now())
 
   @@map("magic_tokens")
+}
+
+enum LeadValidation {
+  UNVALIDATED
+  VALID
+  DUPLICATE
+  INVALID
+  DISPUTED
+}
+
+enum EstimateStatus {
+  DRAFT
+  PRESENTED
+  WON
+  LOST
+  EXPIRED
+}
+
+enum RevenueEventKind {
+  LEAD_CREATED
+  LEAD_VALIDATED
+  BOOKING
+  ESTIMATE_PRESENTED
+  WON
+  LOST
+  REVENUE
+  REFUND
+  SPEND
+}
+
+model Estimate {
+  id          String         @id @default(cuid())
+  businessId  String
+  contactId   String?
+  leadId      String?
+  amount      Float?
+  status      EstimateStatus @default(DRAFT)
+  presentedAt DateTime?
+  decidedAt   DateTime?
+  lossReason  String?
+  notes       String?
+
+  business    Business  @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  contact     Contact?  @relation(fields: [contactId], references: [id], onDelete: SetNull)
+  lead        Lead?     @relation(fields: [leadId], references: [id], onDelete: SetNull)
+
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@map("estimates")
+}
+
+// Append-only revenue event spine: the lineage from lead source through
+// booking, estimate, won sale and revenue that the nine-step flywheel
+// reports on. Never updated, never deleted; corrections are new events.
+model RevenueEvent {
+  id            String           @id @default(cuid())
+  kind          RevenueEventKind
+  businessId    String?
+  leadId        String?
+  estimateId    String?
+  appointmentId String?
+  source        String?
+  campaign      String?
+  amount        Float?
+  currency      String           @default("usd")
+  occurredAt    DateTime         @default(now())
+  metadata      Json?
+
+  @@map("revenue_events")
 }
