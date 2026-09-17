@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server'
 import { db } from '@/lib/db'
 
 interface RouteContext {
-  params: { id: string }
+  params: Promise<{ id: string }>
 }
 
 export async function PATCH(request: Request, { params }: RouteContext) {
@@ -11,7 +11,7 @@ export async function PATCH(request: Request, { params }: RouteContext) {
     const body = await request.json()
 
     const lead = await db.lead.update({
-      where: { id: params.id },
+      where: { id: (await params).id },
       data: {
         status: body.status,
         score: body.score,

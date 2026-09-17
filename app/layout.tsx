@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import type { Metadata } from 'next'
 import './globals.css'
 
@@ -29,11 +30,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="bg-zinc-950 text-zinc-50 antialiased">
         <header className="sticky top-0 z-50 border-b border-white/10 bg-zinc-950/90 backdrop-blur">
           <nav className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4">
-            <a href="/" className="font-semibold tracking-tight">PNW AI Directory</a>
+            <Link href="/" className="font-semibold tracking-tight">PNW AI Directory</Link>
             <div className="hidden items-center gap-6 text-sm text-zinc-300 md:flex">
-              {nav.map(item => <a key={item.href} href={item.href} className="hover:text-white">{item.label}</a>)}
+              {nav.map(item => <Link key={item.href} href={item.href} className="hover:text-white">{item.label}</Link>)}
             </div>
-            <a href="/directory" className="rounded-full bg-emerald-400 px-4 py-2 text-sm font-semibold text-zinc-950 hover:bg-emerald-300">Get audited</a>
+            <Link href="/directory" className="rounded-full bg-emerald-400 px-4 py-2 text-sm font-semibold text-zinc-950 hover:bg-emerald-300">Get audited</Link>
           </nav>
         </header>
         {children}
@@ -45,7 +46,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             </div>
             <div>
               <p className="font-semibold text-white">Machine-readable</p>
-              <ul className="mt-3 space-y-2"><li><a href="/llms.txt">llms.txt</a></li><li><a href="/llms-full.txt">llms-full.txt</a></li><li><a href="/sitemap.xml">sitemap.xml</a></li></ul>
+              <ul className="mt-3 space-y-2"><li><Link href="/llms.txt">llms.txt</Link></li><li><Link href="/llms-full.txt">llms-full.txt</Link></li><li><Link href="/sitemap.xml">sitemap.xml</Link></li></ul>
             </div>
             <div>
               <p className="font-semibold text-white">Launch niches</p>

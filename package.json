@@ -40,7 +40,7 @@
     "lucide-react": "^0.543.0",
     "next": "15.5.4",
     "next-auth": "^4.24.11",
-    "nodemailer": "^9.1.1",
+    "nodemailer": "^6.9.16",
     "prisma": "^6.16.0",
     "react": "19.1.0",
     "react-dom": "19.1.0",
@@ -70,7 +70,8 @@
     "postcss": "^8.4.31",
     "tailwindcss": "^4",
     "tsx": "^4.20.5",
-    "typescript": "^5"
+    "typescript": "^5",
+    "@testing-library/dom": "^10.4.0"
   },
   "description": "AI-readable Pacific Northwest contractor directory powered by Hermes/Paperclip operating loops."
 }

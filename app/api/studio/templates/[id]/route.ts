@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server'
 import { db } from '@/lib/db'
 
 interface RouteContext {
-  params: { id: string }
+  params: Promise<{ id: string }>
 }
 
 export async function PATCH(request: Request, { params }: RouteContext) {
@@ -11,7 +11,7 @@ export async function PATCH(request: Request, { params }: RouteContext) {
     const body = await request.json()
 
     const template = await db.siteTemplate.update({
-      where: { id: params.id },
+      where: { id: (await params).id },
       data: {
         name: body.name,
         slug: body.slug,
@@ -44,7 +44,7 @@ export async function PATCH(request: Request, { params }: RouteContext) {
 
 export async function DELETE(_request: Request, { params }: RouteContext) {
   try {
-    await db.siteTemplate.delete({ where: { id: params.id } })
+    await db.siteTemplate.delete({ where: { id: (await params).id } })
 
     return NextResponse.json({
       success: true,

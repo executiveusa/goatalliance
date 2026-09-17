@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 
 import { db } from '@/lib/db'
+import { scoreLead } from '@/lib/lead-scoring'
 
 export async function GET() {
   try {
@@ -46,6 +47,9 @@ export async function POST(request: Request) {
       )
     }
 
+    const scoring = scoreLead(body)
+    const scoringNote = `auto-score ${scoring.score}: ${scoring.reasons.join('; ')}`
+
     const lead = await db.lead.create({
       data: {
         nicheId: body.nicheId,
@@ -54,7 +58,7 @@ export async function POST(request: Request) {
         abTestId: body.abTestId,
         source: body.source ?? 'WEBSITE',
         status: body.status ?? 'NEW',
-        score: body.score ?? 0,
+        score: typeof body.score === 'number' ? body.score : scoring.score,
         name: body.name,
         email: body.email,
         phone: body.phone,
@@ -64,7 +68,10 @@ export async function POST(request: Request) {
         city: body.city,
         state: body.state,
         utm: body.utm,
-        metadata: body.metadata
+        metadata: {
+          ...(body.metadata && typeof body.metadata === 'object' ? body.metadata : {}),
+          scoring: scoringNote
+        }
       }
     })
 
