@@ -444,6 +444,7 @@ model Lead {
   exposure        Exposure?      @relation(fields: [exposureId], references: [id], onDelete: SetNull)
   voiceCalls      VoiceCall[]
   estimates       Estimate[]
+  followUps       FollowUp[]
 
   createdAt       DateTime       @default(now())
   updatedAt       DateTime       @updatedAt
@@ -480,6 +481,21 @@ model VoiceCall {
   transcript   String?
   summary      String?
   metadata     Json?
+
+  // Required call record (Phlash digest voice scope)
+  callerConsent   Boolean  @default(false) // consent to record/use; outbound requires prior consent
+  disclosureGiven Boolean  @default(false) // truthful automated identity disclosed
+  service        String?
+  place          String?
+  urgency        String?   // emergency, soon, planning
+  qualificationReason String?
+  outcome        String?   // booked, callback_scheduled, escalated, no_fit, abandoned
+  unansweredQuestions String?
+  commitments    String?   // anything the agent promised - must be empty without authority
+  escalationReason String?
+  humanOwner     String?   // accountable human for follow-up
+  slaDueAt       DateTime? // follow-up deadline owned by humanOwner
+  testOnly       Boolean   @default(true)  // synthetic/simulated call; real calls flip this only after approval
 
   voiceAgent   VoiceAgent   @relation(fields: [voiceAgentId], references: [id], onDelete: Cascade)
   lead         Lead?        @relation(fields: [leadId], references: [id], onDelete: SetNull)
@@ -788,4 +804,33 @@ model Exposure {
 
   @@unique([abTestId, visitorKey])
   @@map("exposures")
+}
+
+enum FollowUpChannel {
+  SMS
+  EMAIL
+  CALL
+}
+
+enum FollowUpOutcome {
+  LOGGED
+  ANSWERED
+  REPLIED
+  NO_ANSWER
+  FAILED
+}
+
+// Speed-to-sale / estimate follow-up log. Log-only: records attempts
+// and outcomes; dispatch is a separate, fail-closed concern.
+model FollowUp {
+  id          String           @id @default(cuid())
+  leadId      String
+  channel     FollowUpChannel
+  outcome     FollowUpOutcome  @default(LOGGED)
+  note        String?
+  attemptedAt DateTime         @default(now())
+
+  lead        Lead             @relation(fields: [leadId], references: [id], onDelete: Cascade)
+
+  @@map("follow_ups")
 }
