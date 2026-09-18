@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import { getAllPosts, getPost, renderMarkdown } from '@/lib/content'
 import { notFound } from 'next/navigation'
 
@@ -23,7 +24,7 @@ export default async function BlogPostPage({ params }: Props) {
   return (
     <main className="px-5 py-16">
       <article className="prose prose-invert prose-emerald mx-auto max-w-3xl prose-headings:tracking-tight prose-a:text-emerald-300">
-        <a href="/blog" className="not-prose text-sm text-emerald-300">← Field Notes</a>
+        <Link href="/blog" className="not-prose text-sm text-emerald-300">← Field Notes</Link>
         <p className="not-prose mt-8 text-sm text-zinc-400">{post.date} · {post.vertical || 'strategy'}</p>
         <h1>{post.title}</h1>
         <p className="lead">{post.summary}</p>

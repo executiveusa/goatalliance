@@ -181,7 +181,9 @@ model Contractor {
   user        User             @relation(fields: [userId], references: [id], onDelete: Cascade)
   reviews     Review[]
   categories  ContractorCategory[]
-  
+  credentials Credential[]
+  projects    ProjectEvidence[]
+
   @@map("contractors")
 }
 
@@ -221,7 +223,14 @@ model Review {
   rating       Int      // 1-5
   title        String?
   comment      String?
-  
+
+  // Proof graph provenance
+  source       String      @default("unknown") // google, yelp, internal, ...
+  sourceId     String?     // immutable provider-side id for dedupe
+  observedAt   DateTime    @default(now())
+  status       ProofStatus @default(CLAIMED)
+  disputeNote  String?
+
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
   
@@ -373,12 +382,16 @@ model ABTest {
   status      ABTestStatus @default(PLANNED)
   goal        String?
   metric      String?
+  hypothesis  String?      // one hypothesis/variable per test (required to run)
+  plannedSampleSize Int?   // predefined sample; no early stopping below it
+  guardrails  String?      // attestation: no fake proof/urgency, hidden fees, a11y harm
   startsAt    DateTime?
   endsAt      DateTime?
 
   landingPage LandingPage  @relation(fields: [landingPageId], references: [id], onDelete: Cascade)
   variants    ABTestVariant[]
   leads       Lead[]
+  exposures   Exposure[]
 
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
@@ -395,6 +408,7 @@ model ABTestVariant {
 
   abTest          ABTest         @relation(fields: [abTestId], references: [id], onDelete: Cascade)
   landingVariant  LandingVariant @relation(fields: [landingVariantId], references: [id], onDelete: Cascade)
+  exposures       Exposure[]
 
   @@unique([abTestId, landingVariantId])
   @@map("ab_test_variants")
@@ -408,6 +422,7 @@ model Lead {
   abTestId        String?
   source          LeadSource @default(WEBSITE)
   status          LeadStatus @default(NEW)
+  validation      LeadValidation @default(UNVALIDATED)
   score           Int        @default(0)
 
   name            String?
@@ -420,12 +435,16 @@ model Lead {
   state           String?
   utm             Json?
   metadata        Json?
+  exposureId      String?
 
   niche           Niche          @relation(fields: [nicheId], references: [id], onDelete: Cascade)
   landingPage     LandingPage?   @relation(fields: [landingPageId], references: [id], onDelete: SetNull)
   landingVariant  LandingVariant? @relation(fields: [landingVariantId], references: [id], onDelete: SetNull)
   abTest          ABTest?        @relation(fields: [abTestId], references: [id], onDelete: SetNull)
+  exposure        Exposure?      @relation(fields: [exposureId], references: [id], onDelete: SetNull)
   voiceCalls      VoiceCall[]
+  estimates       Estimate[]
+  followUps       FollowUp[]
 
   createdAt       DateTime       @default(now())
   updatedAt       DateTime       @updatedAt
@@ -463,8 +482,24 @@ model VoiceCall {
   summary      String?
   metadata     Json?
 
+  // Required call record (Phlash digest voice scope)
+  callerConsent   Boolean  @default(false) // consent to record/use; outbound requires prior consent
+  disclosureGiven Boolean  @default(false) // truthful automated identity disclosed
+  service        String?
+  place          String?
+  urgency        String?   // emergency, soon, planning
+  qualificationReason String?
+  outcome        String?   // booked, callback_scheduled, escalated, no_fit, abandoned
+  unansweredQuestions String?
+  commitments    String?   // anything the agent promised - must be empty without authority
+  escalationReason String?
+  humanOwner     String?   // accountable human for follow-up
+  slaDueAt       DateTime? // follow-up deadline owned by humanOwner
+  testOnly       Boolean   @default(true)  // synthetic/simulated call; real calls flip this only after approval
+
   voiceAgent   VoiceAgent   @relation(fields: [voiceAgentId], references: [id], onDelete: Cascade)
   lead         Lead?        @relation(fields: [leadId], references: [id], onDelete: SetNull)
+  contentDrafts ContentDraft[]
 
   createdAt    DateTime     @default(now())
   updatedAt    DateTime     @updatedAt
@@ -539,6 +574,7 @@ model Contact {
 
   business     Business       @relation(fields: [businessId], references: [id], onDelete: Cascade)
   appointments Appointment[]
+  estimates    Estimate[]
 
   @@map("contacts")
 }
@@ -604,6 +640,7 @@ model Business {
   contacts     Contact[]
   appointments Appointment[]
   analytics    AnalyticsEvent[]
+  estimates    Estimate[]
 
   @@map("businesses")
 }
@@ -622,4 +659,219 @@ model MagicToken {
   createdAt  DateTime @default(now())
 
   @@map("magic_tokens")
+}
+
+enum LeadValidation {
+  UNVALIDATED
+  VALID
+  DUPLICATE
+  INVALID
+  DISPUTED
+}
+
+enum EstimateStatus {
+  DRAFT
+  PRESENTED
+  WON
+  LOST
+  EXPIRED
+}
+
+enum RevenueEventKind {
+  LEAD_CREATED
+  LEAD_VALIDATED
+  BOOKING
+  ESTIMATE_PRESENTED
+  WON
+  LOST
+  REVENUE
+  REFUND
+  SPEND
+}
+
+model Estimate {
+  id          String         @id @default(cuid())
+  businessId  String
+  contactId   String?
+  leadId      String?
+  amount      Float?
+  status      EstimateStatus @default(DRAFT)
+  presentedAt DateTime?
+  decidedAt   DateTime?
+  lossReason  String?
+  notes       String?
+
+  business    Business  @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  contact     Contact?  @relation(fields: [contactId], references: [id], onDelete: SetNull)
+  lead        Lead?     @relation(fields: [leadId], references: [id], onDelete: SetNull)
+
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@map("estimates")
+}
+
+// Append-only revenue event spine: the lineage from lead source through
+// booking, estimate, won sale and revenue that the nine-step flywheel
+// reports on. Never updated, never deleted; corrections are new events.
+model RevenueEvent {
+  id            String           @id @default(cuid())
+  kind          RevenueEventKind
+  businessId    String?
+  leadId        String?
+  estimateId    String?
+  appointmentId String?
+  source        String?
+  campaign      String?
+  amount        Float?
+  currency      String           @default("usd")
+  occurredAt    DateTime         @default(now())
+  metadata      Json?
+
+  @@map("revenue_events")
+}
+
+enum ProofStatus {
+  CLAIMED
+  SOURCE_VERIFIED
+  EXPIRED
+  DISPUTED
+  UNKNOWN
+}
+
+// Credential proof: license/insurance/certification with verification
+// lineage. "Verified" always names what was checked, by whom, when,
+// and when it must be rechecked.
+model Credential {
+  id           String      @id @default(cuid())
+  contractorId String
+  type         String      // license, insurance, certification
+  issuer       String
+  scope        String?
+  number       String?     // public license/Policy number when public
+  issuedAt     DateTime?
+  expiresAt    DateTime?
+  status       ProofStatus @default(CLAIMED)
+  source       String?     // where the fact came from
+  verifier     String?     // who/what checked it
+  verifiedAt   DateTime?
+  recheckAt    DateTime?
+
+  contractor   Contractor  @relation(fields: [contractorId], references: [id], onDelete: Cascade)
+
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+
+  @@map("credentials")
+}
+
+// Real-work evidence. consentToPublish is hard-required before any
+// public use; agents never invent project stories.
+model ProjectEvidence {
+  id              String      @id @default(cuid())
+  contractorId    String
+  title           String
+  description     String?
+  mediaUrls       String      @default("[]") // JSON array for SQLite
+  city            String?
+  completedAt     DateTime?
+  consentToPublish Boolean    @default(false)
+  status          ProofStatus @default(CLAIMED)
+  source          String?
+  verifiedAt      DateTime?
+
+  contractor      Contractor  @relation(fields: [contractorId], references: [id], onDelete: Cascade)
+
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+
+  @@map("project_evidence")
+}
+
+// Sticky visitor assignment: one exposure per visitor per test, with
+// the exact variant revision recorded so results stay attributable
+// even after a variant is edited mid-test.
+model Exposure {
+  id              String   @id @default(cuid())
+  abTestId        String
+  abTestVariantId String
+  visitorKey      String   // opaque, hashed upstream; never raw PII
+  revision        String   // variant identity + config marker at assignment
+  firstSeenAt     DateTime @default(now())
+
+  abTest          ABTest       @relation(fields: [abTestId], references: [id], onDelete: Cascade)
+  abTestVariant   ABTestVariant @relation(fields: [abTestVariantId], references: [id], onDelete: Cascade)
+  leads           Lead[]
+
+  @@unique([abTestId, visitorKey])
+  @@map("exposures")
+}
+
+enum FollowUpChannel {
+  SMS
+  EMAIL
+  CALL
+}
+
+enum FollowUpOutcome {
+  LOGGED
+  ANSWERED
+  REPLIED
+  NO_ANSWER
+  FAILED
+}
+
+// Speed-to-sale / estimate follow-up log. Log-only: records attempts
+// and outcomes; dispatch is a separate, fail-closed concern.
+model FollowUp {
+  id          String           @id @default(cuid())
+  leadId      String
+  channel     FollowUpChannel
+  outcome     FollowUpOutcome  @default(LOGGED)
+  note        String?
+  attemptedAt DateTime         @default(now())
+
+  lead        Lead             @relation(fields: [leadId], references: [id], onDelete: Cascade)
+
+  @@map("follow_ups")
+}
+
+enum RedactionStatus {
+  PENDING
+  REDACTED
+  NEEDS_HUMAN_CHECK
+}
+
+enum ContentReviewStatus {
+  DRAFT
+  PENDING_REVIEW
+  APPROVED
+  REJECTED
+}
+
+// Call/transcript-to-content pipeline (Phlash digest): capture real
+// questions from the field, redact private data, extract language,
+// expert-review the facts, track freshness. APPROVED means ready for
+// the owner's copy pass - nothing publishes from this table.
+model ContentDraft {
+  id              String             @id @default(cuid())
+  voiceCallId     String?
+  question        String             // the real customer question being answered
+  extractedLanguage Json?            // phrases, objections, misconceptions
+  redactionStatus RedactionStatus    @default(PENDING)
+  redactedSource  String?            // redacted working copy; original stays on the call record
+  draftBody       String?            // placeholder/draft only - agent copy never ships
+  reviewStatus    ContentReviewStatus @default(DRAFT)
+  reviewer        String?            // expert who verified the facts
+  reviewedAt      DateTime?
+  reviewNotes     String?
+  freshnessAt     DateTime?          // facts verified as of
+  recheckAt       DateTime?          // stale after this date
+
+  voiceCall       VoiceCall?         @relation(fields: [voiceCallId], references: [id], onDelete: SetNull)
+
+  createdAt       DateTime           @default(now())
+  updatedAt       DateTime           @updatedAt
+
+  @@map("content_drafts")
 }

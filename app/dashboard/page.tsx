@@ -101,7 +101,7 @@ export default function DashboardPage() {
             Good morning, {DEMO_BUSINESS.ownerName.split(' ')[0]}! 👋
           </h1>
           <p className="text-slate-400 mt-1">
-            Here's what's happening with your business today.
+            Here&apos;s what&apos;s happening with your business today.
           </p>
         </div>
 

@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import { verticals, getVertical } from '@/data/verticals'
 import { contractorProfiles } from '@/data/profiles'
 import { verticalServiceSchema } from '@/lib/schema'
@@ -26,7 +27,7 @@ export default async function VerticalPage({ params }: Props) {
     <main className="px-5 py-16">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(verticalServiceSchema(v)) }} />
       <div className="mx-auto max-w-7xl">
-        <a href="/directory" className="text-sm text-emerald-300">← Directory</a>
+        <Link href="/directory" className="text-sm text-emerald-300">← Directory</Link>
         <div className="mt-8 grid gap-10 lg:grid-cols-[1fr_.8fr]">
           <div>
             <p className="text-sm font-semibold uppercase tracking-[.2em] text-emerald-300">{v.shortName}</p>

@@ -3,13 +3,13 @@ import { NextResponse } from 'next/server'
 import { db } from '@/lib/db'
 
 interface RouteContext {
-  params: { id: string }
+  params: Promise<{ id: string }>
 }
 
 export async function GET(_request: Request, { params }: RouteContext) {
   try {
     const variants = await db.landingVariant.findMany({
-      where: { landingPageId: params.id },
+      where: { landingPageId: (await params).id },
       orderBy: { createdAt: 'desc' }
     })
 
@@ -46,7 +46,7 @@ export async function POST(request: Request, { params }: RouteContext) {
 
     const variant = await db.landingVariant.create({
       data: {
-        landingPageId: params.id,
+        landingPageId: (await params).id,
         name: body.name,
         slug: body.slug,
         isControl: body.isControl ?? false,

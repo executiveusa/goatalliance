@@ -1,23 +1,26 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { PrismaClient } from '@prisma/client'
+import type { ContactStatus } from '@prisma/client'
+import { db } from '@/lib/db'
 
-const prisma = new PrismaClient()
+
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url)
   const businessId = searchParams.get('businessId')
   const search = searchParams.get('search') || ''
   const status = searchParams.get('status')
+  const tag = searchParams.get('tag')
 
   if (!businessId) {
     return NextResponse.json({ error: 'businessId required' }, { status: 400 })
   }
 
   try {
-    const contacts = await prisma.contact.findMany({
+    const contacts = await db.contact.findMany({
       where: {
         businessId,
-        ...(status ? { status: status as any } : {}),
+        ...(status ? { status: status as ContactStatus } : {}),
+        ...(tag ? { tags: { contains: `"${tag}"` } } : {}),
         ...(search ? {
           OR: [
             { name: { contains: search } },
@@ -53,7 +56,7 @@ export async function POST(request: NextRequest) {
     // Ensure business exists (create demo if not)
     await ensureBusinessExists(businessId)
 
-    const contact = await prisma.contact.create({
+    const contact = await db.contact.create({
       data: {
         businessId,
         name,
@@ -66,7 +69,7 @@ export async function POST(request: NextRequest) {
     })
 
     // Log analytics event
-    await prisma.analyticsEvent.create({
+    await db.analyticsEvent.create({
       data: {
         businessId,
         eventType: 'lead_received',
@@ -89,7 +92,7 @@ export async function PATCH(request: NextRequest) {
 
     if (!id) return NextResponse.json({ error: 'id required' }, { status: 400 })
 
-    const contact = await prisma.contact.update({
+    const contact = await db.contact.update({
       where: { id },
       data: updates
     })
@@ -101,9 +104,9 @@ export async function PATCH(request: NextRequest) {
 }
 
 async function ensureBusinessExists(businessId: string) {
-  const existing = await prisma.business.findUnique({ where: { id: businessId } })
+  const existing = await db.business.findUnique({ where: { id: businessId } })
   if (!existing) {
-    await prisma.business.create({
+    await db.business.create({
       data: {
         id: businessId,
         name: 'Demo Business',

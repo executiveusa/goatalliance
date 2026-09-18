@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { PrismaClient } from '@prisma/client'
+import { db } from '@/lib/db'
 
-const prisma = new PrismaClient()
+
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url)
@@ -13,7 +13,7 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    const appointments = await prisma.appointment.findMany({
+    const appointments = await db.appointment.findMany({
       where: {
         businessId,
         ...(upcoming ? { scheduledAt: { gte: new Date() } } : {})
@@ -42,7 +42,7 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const appointment = await prisma.appointment.create({
+    const appointment = await db.appointment.create({
       data: {
         businessId,
         contactId,
@@ -60,7 +60,7 @@ export async function POST(request: NextRequest) {
     })
 
     // Log analytics event
-    await prisma.analyticsEvent.create({
+    await db.analyticsEvent.create({
       data: {
         businessId,
         eventType: 'appointment_booked',
@@ -82,7 +82,7 @@ export async function PATCH(request: NextRequest) {
 
     if (!id) return NextResponse.json({ error: 'id required' }, { status: 400 })
 
-    const appointment = await prisma.appointment.update({
+    const appointment = await db.appointment.update({
       where: { id },
       data: { status, ...rest },
       include: { contact: { select: { id: true, name: true } } }
@@ -90,7 +90,7 @@ export async function PATCH(request: NextRequest) {
 
     // If completed, log revenue
     if (status === 'COMPLETED' && appointment.price) {
-      await prisma.analyticsEvent.create({
+      await db.analyticsEvent.create({
         data: {
           businessId: appointment.businessId,
           eventType: 'revenue_recorded',
@@ -99,7 +99,7 @@ export async function PATCH(request: NextRequest) {
       }).catch(() => {})
 
       // Update contact revenue + job count
-      await prisma.contact.update({
+      await db.contact.update({
         where: { id: appointment.contactId },
         data: {
           totalRevenue: { increment: appointment.price },

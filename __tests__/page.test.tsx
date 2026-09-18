@@ -2,30 +2,27 @@ import { render, screen } from '@testing-library/react'
 import Home from '@/app/page'
 
 describe('Home', () => {
-  it('renders the G.O.A.T. Alliance heading', () => {
+  it('renders the directory hero heading', () => {
     render(<Home />)
-    
+
     const heading = screen.getByRole('heading', {
-      name: /g\.o\.a\.t\. alliance/i,
+      name: /ai-readable contractor directory/i,
     })
 
     expect(heading).toBeInTheDocument()
   })
 
-  it('renders the contractor cards', () => {
+  it('links to the directory', () => {
     render(<Home />)
-    
-    const contractorCards = screen.getAllByTestId('contractor-card')
-    expect(contractorCards).toHaveLength(6)
+
+    const links = screen.getAllByRole('link', { name: /directory/i })
+    expect(links.length).toBeGreaterThan(0)
   })
 
-  it('renders the navigation links', () => {
+  it('links to the field guide blog', () => {
     render(<Home />)
-    
-    const directoryLink = screen.getByRole('link', { name: /directory/i })
-    const complianceLink = screen.getByRole('link', { name: /compliance/i })
 
-    expect(directoryLink).toBeInTheDocument()
-    expect(complianceLink).toBeInTheDocument()
+    const blogLink = screen.getByRole('link', { name: /field guide/i })
+    expect(blogLink).toBeInTheDocument()
   })
 })
