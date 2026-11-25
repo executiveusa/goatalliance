@@ -71,6 +71,18 @@ export const verticals: Vertical[] = [
     proofAssets: ['before-after photos', 'equipment photo', 'runoff plan', 'detergent list', 'property-manager references'],
     cta: 'Get a pressure washing profile audit',
     image: '/images/sector-pressure-washers.svg'
+  },
+  {
+    slug: 'portable-restrooms',
+    name: 'Portable Restrooms & Site Rentals',
+    shortName: 'Porta-Potty Rentals',
+    buyerIntent: 'Construction sites, weddings, festivals, ADA units, handwash stations, rapid delivery',
+    aiReadableAngle: 'Expose unit types, delivery radius, weekly service schedules, ADA compliance, and same-day job-site drop-off in structured data.',
+    socialPurposeAngle: 'Support clean community events, neighborhood cleanups, and safe sanitation access across the Pacific Northwest.',
+    priorityFields: ['insurance', 'unit types', 'ADA units', 'handwash stations', 'service frequency', 'delivery radius', 'same-day availability'],
+    proofAssets: ['clean unit photos', 'delivery truck photo', 'service checklist', 'event gallery', 'verified reviews'],
+    cta: 'Get a site-rentals profile audit',
+    image: '/images/sector-plumbers.svg'
   }
 ]
 
